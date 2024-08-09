@@ -34,7 +34,7 @@ O projeto RoomReservation é um sistema web de agendamento e reserva de salas pa
 ```bash
    python -m venv venv
    venv\Scripts\activate
-   pip install -r requirements.txt
+   pip install -r requeriments.txt
    ```
 
 4. Configure as variáveis de ambiente:
