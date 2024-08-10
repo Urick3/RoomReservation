@@ -4,7 +4,8 @@ O projeto RoomReservation é um sistema web de agendamento e reserva de salas pa
 
 ## Funcionalidades
 
-- **Cadastro de Usuários**: Integração com sistemas de autenticação para alunos, professores e administradores.
+- **Cadastro de Usuários**: Integração com sistemas de autenticação para professores e administradores.
+- **Cadastro de Salas**: Integração com sistemas de autenticação para professores e administradores.
 - **Agendamento de Salas**: Ferramenta fácil de usar para reserva de salas com base em disponibilidade.
 - **Integração SESI/SENAI**: Diferenciação entre as reservas e agendamentos para ensino regular (SESI) e cursos técnicos/profissionalizantes (SENAI).
 - **Notificações**: Alertas via e-mail ou SMS para lembrar sobre reservas e agendamentos.
@@ -12,11 +13,11 @@ O projeto RoomReservation é um sistema web de agendamento e reserva de salas pa
 
 ## Tecnologias Utilizadas
 
-- **Backend**: [Especificar a tecnologia, por exemplo, Django, Node.js]
-- **Frontend**: [Especificar a tecnologia, por exemplo, React, Angular]
-- **Banco de Dados**: [Especificar o SGBD, por exemplo, PostgreSQL, MySQL]
-- **Autenticação**: [Especificar o método, por exemplo, OAuth, JWT]
-- **Integração de Notificações**: [Especificar a API ou serviço utilizado, por exemplo, Twilio, SendGrid]
+- **Backend**: [Django]
+- **Frontend**: [Jquery, Javascript]
+- **Banco de Dados**: [ PostgreSQL, MySQL]
+- **Autenticação**: [ OAuth]
+- **Integração de Notificações**: [ Twilio, SendGrid]
 
 ## Instalação
 
@@ -69,7 +70,7 @@ git switch minha-feature
 3. Faça commit das suas alterações:
 
 ```bash
-git commit -m "Descrição da minha feature"
+git commit -m "{feature}: Descrição da minha feature"
 ```
 
 4. Envie as suas alterações para o seu fork:
@@ -89,12 +90,12 @@ git push origin minha-feature
 
 ## Convenção de Commits
 
-'feat': Uma nova feature.
-'fix': Correção de bug.
-'docs': Alterações na documentação.
-'style': Formatação, sem alterações no código.
-'refactor': Refatoração do código.
-'test': Adição ou correção de testes.
+**'feat'**: Uma nova feature.<br>
+**'fix'**: Correção de bug.<br>
+**'docs'**: Alterações na documentação.<br>
+**'style'**: Formatação, sem alterações no código.<br>
+**'refactor'**: Refatoração do código.<br>
+**'test'**: Adição ou correção de testes.<br>
 
 ## Licença
 Este projeto é licenciado sob a [Licença](LICENSE).
