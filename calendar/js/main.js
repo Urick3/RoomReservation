@@ -84,8 +84,8 @@ function date_click(date, element) {
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
     var data = {
-        "occasion": "Event for " + day + "/" + month + "/" + year,
-        "details": "Details of the event on this date."
+        "occasion": "Evento para " + day + "/" + month + "/" + year,
+        "details": "Detales do evento aqui..."
     };
     show_event_form(data);
 }
@@ -161,3 +161,9 @@ const months = [
     "November", 
     "December"
 ];
+
+
+function mostardiv() {
+    var div = document.getElementById("calen");
+    div.style.visibility = "visible";
+}
