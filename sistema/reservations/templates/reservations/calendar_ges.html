@@ -1,0 +1,115 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}
+  <title>Calendário Gestor</title>
+{% endblock %}
+
+{% block style %}
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <!-- nav -->
+  <section class="py-5">
+      <div> 
+          <h1 style="font-family: Modestic; text-align: center;" >Calendário</h1>
+      </div>
+      <div>
+          <div class="d-flex justify-content-center">
+              <select class="form-select" style="width: 50%;" aria-label="Default select example" onchange="mostardivprof();">
+                  <option selected>Selecione sua sala</option>
+                  <option value="1">Lab 100</option>
+                  <option value="2">Lab 101</option>
+                  <option value="3">Lab 102</option>
+              </select>
+          </div>
+          <div class="d-flex justify-content-center pt-3" style="visibility: hidden;" id="prof">
+              <select class="form-select" style="width: 50%;" aria-label="Default select example" onchange="mostardiv();">
+                  <option selected>Selecione um professor</option>
+                  <option value="1">Adalberto Torres</option>
+                  <option value="2">Adalberto Torres IV Jr. Filho Neto</option>
+                  <option value="3">Igor Nassimento</option>
+              </select>
+          </div>
+          <div class="row" style="visibility: hidden;" id="calen">
+              <div class="col-md-12">
+                <div class="content w-100">
+                  <div class="calendar-container">
+                    <div class="calendar"> 
+                      <div class="year-header"> 
+                        <span class="left-button fa fa-chevron-left" id="prev"> </span> 
+                        <span class="year" id="label"></span> 
+                        <span class="right-button fa fa-chevron-right" id="next"> </span>
+                      </div> 
+                      <table class="months-table w-100"> 
+                        <tbody>
+                          <tr class="months-row">
+                            <td class="month">Jan</td> 
+                            <td class="month">Fev</td> 
+                            <td class="month">Mar</td> 
+                            <td class="month">Abr</td> 
+                            <td class="month">Mai</td> 
+                            <td class="month">Jun</td> 
+                            <td class="month">Jul</td>
+                            <td class="month">Ago</td> 
+                            <td class="month">Set</td> 
+                            <td class="month">Out</td>          
+                            <td class="month">Nov</td>
+                            <td class="month">Dez</td>
+                          </tr>
+                        </tbody>
+                      </table> 
+                      <table class="days-table w-100"> 
+                        <td class="day">Dom</td> 
+                        <td class="day">Seg</td> 
+                        <td class="day">Ter</td> 
+                        <td class="day">Qua</td> 
+                        <td class="day">Qui</td> 
+                        <td class="day">Sex</td> 
+                        <td class="day">Sáb</td>
+                      </table> 
+                      <div class="frame"> 
+                        <table class="dates-table w-100"> 
+                          <tbody class="tbody">             
+                          </tbody> 
+                        </table> 
+                      </div> 
+                    </div>
+                  </div>
+                  <p class="events-container" style="background-image: url('./calendar/images/ses3.png');background-repeat: no-repeat;background-size: cover; background-position: center;">
+                    
+                  </p>
+                  <!--<div class="events-container">
+                    <img src="path_to_your_image.jpg" alt="Placeholder Image" style="width: 80%; height: auto;">
+                  </div>-->
+                  <div class="dialog" id="dialog">
+                    <h2 class="dialog-header"> Adicionar Evento </h2>
+                    <form class="form" id="form">
+                      <div class="form-container" align="center">
+                        <label class="form-label" id="valueFromMyButton" for="name">Nome do Evento</label>
+                        <input class="input" type="text" id="name" maxlength="36">
+                        <label class="form-label" id="valueFromMyButton" for="count">Numero</label>
+                        <input class="input" type="number" id="count" min="0" max="1000000" maxlength="7">
+                        <input type="button" value="Cancel" class="button" id="cancel-button">
+                        <input type="button" value="OK" class="button button-white" id="ok-button">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  
+  {% block script %}
+    <script src="{% static 'calendar/js/jquery.min.js' %}"></script>
+    <script src="{% static 'calendar/js/popper.js' %}"></script>
+    <script src="{% static 'calendar/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'calendar/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+  {% endblock %}
+
+{% endblock %}
