@@ -167,3 +167,9 @@ function mostardiv() {
     var div = document.getElementById("calen");
     div.style.visibility = "visible";
 }
+
+function mostardivprof() {
+    var div = document.getElementById("prof");
+    div.style.visibility = "visible";
+}
+
