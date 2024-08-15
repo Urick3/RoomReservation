@@ -6,4 +6,5 @@ urlpatterns = [
     path('request_pending',, name='request_pending'),
     path('requests/', , name='requests'),
     path('total_request/', , name='total_request')
+
 ]
