@@ -23,7 +23,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('6l^&u_oiums)l2253zo#l#zygsuz7hv0#uj#5rpw0ve$m)vqte')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=True)
@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT')
+        'NAME': env('edu'),
+        'USER': env('root'),
+        'PASSWORD': env(''),
+        'HOST': env('localhost'),
+        'PORT': env('3306'),
     }
 }
 
