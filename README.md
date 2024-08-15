@@ -1,5 +1,6 @@
 # Sistema de Agendamento e Reserva de Salas
-
+![002 (1)](https://github.com/user-attachments/assets/013238f6-5049-43a0-81a9-4f028f9be239)
+<br>
 O projeto RoomReservation é um sistema web de agendamento e reserva de salas para várias escolas integradas, incluindo o SESI para ensino regular e o SENAI para cursos técnicos, aperfeiçoamento, qualificação, e iniciação profissional. O sistema é desenvolvido de forma colaborativa e é open-source, buscando melhorar a eficiência no uso de recursos educacionais.
 
 ## Funcionalidades
@@ -15,9 +16,9 @@ O projeto RoomReservation é um sistema web de agendamento e reserva de salas pa
 
 - **Backend**: [Django]
 - **Frontend**: [Jquery, Javascript]
-- **Banco de Dados**: [ PostgreSQL, MySQL]
-- **Autenticação**: [ OAuth]
-- **Integração de Notificações**: [ Twilio, SendGrid]
+- **Banco de Dados**: [MySQL]
+- **Autenticação**: [ DjangoAuth]
+- **Integração de Notificações**: [ EmailSend]
 
 ## Instalação
 
@@ -108,6 +109,7 @@ Para mais informações ou dúvidas, entre em contato através do e-mail: trabal
 
 ## Equipe
 Um agradecimento a todos que desenvolveram e ajudaram esse projeto de alguma forma.
+<br><br>
 ![IMG_1110](https://github.com/user-attachments/assets/deb65cff-28a7-4a96-9952-98c858a0f69c)
 
 
@@ -125,7 +127,7 @@ Um agradecimento a todos que desenvolveram e ajudaram esse projeto de alguma for
 
 
 ## Regras para o desenvolvimento 
-atualize sempre a branch develop nunca a main 
+Atualize sempre a branch develop nunca a main 
 sempre que for mexer no projeto inicie a venv e se precisar instalar alguma lib depois de instalada atualize o requeriments.txt
 com o comando: 
 
