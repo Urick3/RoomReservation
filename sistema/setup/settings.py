@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'reservations',
     'users',
     'rooms',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,26 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Custom user model
+AUTH_USER_MODEL = 'users.User'
+
+# Authentication
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard' 
+
+AUTHENTICATION_BACKENDS = [
+    'user.backend.EmailBackend',  
+]
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST')  # Host do servidor SMTP
+EMAIL_PORT = env('EMAIL_PORT') # Porta do servidor SMTP
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', default=True) # Use TLS para encriptar a conexão
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Seu email
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Sua senha de email
+
+DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')  # Email padrão para envio de mensagens
