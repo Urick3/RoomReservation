@@ -106,7 +106,9 @@ Para mais informações ou dúvidas, entre em contato através do e-mail: trabal
 
 
 
-
+## Equipe
+Um agradecimento a todos que desenvolveram e ajudaram esse projeto de alguma forma.
+![IMG_1110](https://github.com/user-attachments/assets/deb65cff-28a7-4a96-9952-98c858a0f69c)
 
 
 
