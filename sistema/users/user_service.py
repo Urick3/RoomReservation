@@ -1,10 +1,28 @@
 from users.user_repository import UserRepository
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class UserService:
     @staticmethod
-    def list_all_users():
-        """Lista todos os usuários do sistema."""
-        return UserRepository.get_all_users()
+    @staticmethod
+    def list_all_users(page=1, per_page=10):
+        """
+        Lista todos os usuários com paginação.
+
+        :param page: Número da página atual.
+        :param per_page: Quantidade de itens por página.
+        :return: Página atual com os usuários e informações de paginação.
+        """
+        all_users = UserRepository.get_all_users()
+        paginator = Paginator(all_users, per_page)
+
+        try:
+            users = paginator.page(page)
+        except PageNotAnInteger:
+            users = paginator.page(1)
+        except EmptyPage:
+            users = paginator.page(paginator.num_pages)
+
+        return users
 
     @staticmethod
     def get_user_details(user_id):

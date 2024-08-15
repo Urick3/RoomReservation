@@ -3,11 +3,17 @@ from rooms.models import  *
 from rooms.forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from rooms.room_service import RoomService
 
-# Create your views here.
+def room_list_view(request):
+    page = request.GET.get('page', 1)
+    per_page = 10  # ou você pode tornar isso dinâmico também
+    
+    rooms = RoomService.list_all_rooms(page=page, per_page=per_page)
+    
+    return render(request, 'rooms/classrooms.html', {'rooms': rooms})
 
-def read_rooms():
-    return
+
 
 def create_rooms():
     return
