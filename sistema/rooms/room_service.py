@@ -1,10 +1,27 @@
 from rooms.room_repository import RoomRepository
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class RoomService:
     @staticmethod
-    def list_all_rooms():
-        """Lista todas as salas disponíveis."""
-        return RoomRepository.get_all_rooms()
+    def list_all_rooms(page=1, per_page=10):
+        """
+        Lista todas as salas com paginação.
+
+        :param page: Número da página atual.
+        :param per_page: Quantidade de itens por página.
+        :return: Página atual com as salas e informações de paginação.
+        """
+        all_rooms = RoomRepository.get_all_rooms()
+        paginator = Paginator(all_rooms, per_page)
+
+        try:
+            rooms = paginator.page(page)
+        except PageNotAnInteger:
+            rooms = paginator.page(1)
+        except EmptyPage:
+            rooms = paginator.page(paginator.num_pages)
+
+        return rooms
 
     @staticmethod
     def get_room_details(room_id):

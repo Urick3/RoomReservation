@@ -1,12 +1,29 @@
 from reservations.reservation_repository import HourRepository
 from reservations.reservation_repository  import ReservationRepository
 from reservations.reservation_repository  import ReservationApprovalRepository
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class ReservationApprovalService:
     @staticmethod
-    def list_all_approvals():
-        """Lista todas as aprovações de reservas."""
-        return ReservationApprovalRepository.get_all_approvals()
+    def list_all_approvals(page=1, per_page=10):
+        """
+        Lista todas as aprovações de reservas com paginação.
+
+        :param page: Número da página atual.
+        :param per_page: Quantidade de itens por página.
+        :return: Página atual com as aprovações e informações de paginação.
+        """
+        all_approvals = ReservationApprovalRepository.get_all_approvals()
+        paginator = Paginator(all_approvals, per_page)
+
+        try:
+            approvals = paginator.page(page)
+        except PageNotAnInteger:
+            approvals = paginator.page(1)
+        except EmptyPage:
+            approvals = paginator.page(paginator.num_pages)
+
+        return approvals
 
     @staticmethod
     def get_approval_details(approval_id):
@@ -24,9 +41,27 @@ class ReservationApprovalService:
 
 class ReservationService:
     @staticmethod
-    def list_all_reservations():
-        """Lista todas as reservas."""
-        return ReservationRepository.get_all_reservations()
+    def list_all_reservations(page=1, per_page=10):
+        """
+        Lista todas as reservas com paginação.
+
+        :param page: Número da página atual.
+        :param per_page: Quantidade de itens por página.
+        :return: Página atual com as reservas e informações de paginação.
+        """
+        all_reservations = ReservationRepository.get_all_reservations()
+        paginator = Paginator(all_reservations, per_page)
+
+        try:
+            reservations = paginator.page(page)
+        except PageNotAnInteger:
+            # Se a página não for um inteiro, entrega a primeira página
+            reservations = paginator.page(1)
+        except EmptyPage:
+            # Se a página estiver fora do intervalo (e.g. 9999), entrega a última página de resultados
+            reservations = paginator.page(paginator.num_pages)
+
+        return reservations
 
     @staticmethod
     def get_reservation_details(reservation_id):
@@ -53,9 +88,25 @@ class ReservationService:
 
 class HourService:
     @staticmethod
-    def list_all_hours():
-        """Lista todos os horários disponíveis."""
-        return HourRepository.get_all_hours()
+    def list_all_hours(page=1, per_page=10):
+        """
+        Lista todos os horários com paginação.
+
+        :param page: Número da página atual.
+        :param per_page: Quantidade de itens por página.
+        :return: Página atual com os horários e informações de paginação.
+        """
+        all_hours = HourRepository.get_all_hours()
+        paginator = Paginator(all_hours, per_page)
+
+        try:
+            hours = paginator.page(page)
+        except PageNotAnInteger:
+            hours = paginator.page(1)
+        except EmptyPage:
+            hours = paginator.page(paginator.num_pages)
+
+        return hours
 
     @staticmethod
     def get_hour_details(hour_id):
