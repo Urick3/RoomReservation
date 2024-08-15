@@ -23,24 +23,34 @@
                 </div>
             </div>
             <div class="container text-center" style="color: white; background-color: #045CAC;">
+                {% for room in rooms %}
                 <hr style="margin: 0; opacity: 100;">
                 <div class="row">
                     <div class="col">
-                        <p>Lab. Informática</p>
+                        <p>{{room.id}}</p>
                     </div>
                     <div class="col">
-                        <p>103</p>
+                        <p>{{room.name}}</p>
                     </div>
                 </div>
-                <hr style="margin: 0; opacity: 100;">
-                <div class="row">
-                    <div class="col">
-                        <p>Lab. Informática</p>
-                    </div>
-                    <div class="col">
-                        <p>103</p>
-                    </div>
-                </div>
+                {% endfor %}
+            </div>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if rooms.has_previous %}
+                        <a href="?page=1">&laquo; primeira</a>
+                        <a href="?page={{ rooms.previous_page_number }}">anterior</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Página {{ rooms.number }} de {{ rooms.paginator.num_pages }}.
+                    </span>
+            
+                    {% if rooms.has_next %}
+                        <a href="?page={{ rooms.next_page_number }}">próxima</a>
+                        <a href="?page={{ rooms.paginator.num_pages }}">última &raquo;</a>
+                    {% endif %}
+                </span>
             </div>
         </div>
     </section>
