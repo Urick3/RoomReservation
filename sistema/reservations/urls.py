@@ -2,5 +2,9 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    # Adicione outras URLs aqui
+    path('calender/', , name='calender'),
+    path('request_pending',, name='request_pending'),
+    path('requests/', , name='requests'),
+    path('total_request/', , name='total_request')
+
 ]
