@@ -1,5 +1,10 @@
 {% extends 'users/base.html' %}
 {% load static %}
+
+{% block nav %}
+    {% include 'users/partials/manager/_header.html' %}
+{% endblock %}
+
 {% block content %}
     <section>
         <!-- Solicitações -->

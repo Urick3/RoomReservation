@@ -11,6 +11,10 @@
                 padding-bottom: 50px;
             }
         }
+        @font-face {
+            font-family: Modestic;
+            src: url("{% static 'assets/fonts/modestic_sans/ModesticSans-Bold.ttf' %}") format(truetype);
+        }
     </style>
 {% endblock %}
 
@@ -24,7 +28,7 @@
         <div class="container py-5">
             <div class="col d-flex justify-content-center">
                 <div class="mx-auto media">
-                    <a href="#" style="text-decoration: none;">
+                    <a href="{% url 'calendar' %}" style="text-decoration: none;">
                         <div class="card text-center" style="width: 18rem; background-color: #045CAC; color: white; border-radius: 20px;">
                             <div class="card-body">
                                 <div>
@@ -40,7 +44,7 @@
                     </a>
                 </div>
                 <div class="mx-auto media">
-                    <a href="#" style="text-decoration: none;">
+                    <a href="{% url 'requests' %}" style="text-decoration: none;">
                         <div class="card text-center" style="width: 18rem; background-color: #045CAC; color: white; border-radius: 20px;">
                             <div class="card-body">
                                 <div>
@@ -57,13 +61,4 @@
             </div>
         </div>
     </section>
-
-    <!-- <script>
-        function media(){
-            const width = window.innerWidth
-            if width.window.innerWidth <= 770 {
-                
-            }
-        }
-    </script> -->
 {% endblock %}
