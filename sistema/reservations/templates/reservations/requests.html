@@ -25,62 +25,39 @@
       </div>
       <div class="container mt-4">
               <div class="row align-items-center">
+                  {% for reserva in reservas %}
                   <div class="col-sm-4 mb-3 mb-sm-0 pb-3">
                       <div class="card border-2">
                         <div class="card-body text-end">
                           <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Sala:</p>
-                          <h5 class="card-title text-start">Lab. Informática</h5>
+                          <h5 class="card-title text-start">{{reserva.room}}</h5>
                           <hr>
                           <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Data/Hora:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">10/08/2024 - 14:00</h5>
+                          <h5 class="card-title text-start" style="font-size: 16px;">{{reserva.date}} | {{reserva.hour}}</h5>
                           <hr>
                           <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Status:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">Aprovado</h5>
+                          <h5 class="card-title text-start" style="font-size: 16px;">{{reserva.status}}</h5>
                         </div>
                       </div>
                   </div>
-                  <div class="col-sm-4 mb-3 mb-sm-0 pb-3">
-                      <div class="card border-2">
-                        <div class="card-body text-end">
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Sala:</p>
-                          <h5 class="card-title text-start">Lab. Informática</h5>
-                          <hr>
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Data/Hora:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">10/08/2024 - 14:00</h5>
-                          <hr>
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Status:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">Aprovado</h5>
-                        </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-4 mb-3 mb-sm-0 pb-3">
-                      <div class="card border-2">
-                        <div class="card-body text-end">
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Sala:</p>
-                          <h5 class="card-title text-start">Lab. Informática</h5>
-                          <hr>
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Data/Hora:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">10/08/2024 - 14:00</h5>
-                          <hr>
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Status:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">Pendente</h5>
-                        </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-4 mb-3 mb-sm-0 pb-3">
-                      <div class="card border-2">
-                        <div class="card-body text-end">
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Sala:</p>
-                          <h5 class="card-title text-start">Lab. Informática</h5>
-                          <hr>
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Data/Hora:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">10/08/2024 - 14:00</h5>
-                          <hr>
-                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Status:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">Pendente</h5>
-                        </div>
-                      </div>
-                  </div>
+                  {% endfor %}
+                  <div class="pagination">
+                    <span class="step-links">
+                        {% if reservas.has_previous %}
+                            <a href="?page=1">&laquo; primeira</a>
+                            <a href="?page={{ reservas.previous_page_number }}">anterior</a>
+                        {% endif %}
+            
+                        <span class="current">
+                            Página {{ reservas.number }} de {{ reservas.paginator.num_pages }}.
+                        </span>
+            
+                        {% if reservas.has_next %}
+                            <a href="?page={{ reservas.next_page_number }}">próxima</a>
+                            <a href="?page={{ reservas.paginator.num_pages }}">última &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
               </div>   
       </div>
   </section>

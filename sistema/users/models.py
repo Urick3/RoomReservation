@@ -25,4 +25,4 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return f"{self.username} ({self.get_type_user_display()})"
+        return f"{self.username} ({self.get_user_type_display()})"

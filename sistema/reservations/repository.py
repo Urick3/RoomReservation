@@ -17,11 +17,12 @@ class ReservationApprovalRepository:
             return None
 
     @staticmethod
-    def create_approval(reservation, manager):
+    def create_approval(reservation, manager, status):
         """Cria uma nova aprovação de reserva."""
         return ReservationApproval.objects.create(
             reservation=reservation,
-            manager=manager
+            manager=manager,
+            status=status
         )
     
 
@@ -57,7 +58,11 @@ class ReservationRepository:
         reservation = ReservationRepository.get_reservation_by_id(reservation_id)
         if reservation:
             for key, value in kwargs.items():
-                setattr(reservation, key, value)
+                # Verifica se o campo existe no modelo Reservation antes de tentar definir o valor
+                if hasattr(reservation, key):
+                    setattr(reservation, key, value)
+                else:
+                    print(f"Warning: '{key}' não é um campo válido para Reservation.")
             reservation.save()
             return reservation
         return None
@@ -73,7 +78,18 @@ class ReservationRepository:
     
     @staticmethod
     def get_reservations_by_date_and_status(date, status):
+        """Retorna reservas com um determinado status para uma data específica."""
         return Reservation.objects.filter(date=date, status=status)
+    
+    @staticmethod
+    def get_reservations_by_status(status):
+        """Retorna reservas com um determinado status específico."""
+        return Reservation.objects.filter(status=status)
+
+    @staticmethod
+    def get_reservations_by_user_id(user_id):
+        """Retorna reservas de um usuário específico."""
+        return Reservation.objects.filter(teacher_id=user_id)
     
     @staticmethod
     def get_reservations_by_room_date_and_status(room, date, status):
@@ -137,3 +153,11 @@ class HourRepository:
         :return: Queryset de horas filtradas.
         """
         return hours.exclude(id__in=excluded_ids)
+    
+    @staticmethod
+    def get_hour_by_range(range_hour):
+        """Retorna um horário com base no intervalo de horas."""
+        try:
+            return Hour.objects.get(range_hour=range_hour)
+        except Hour.DoesNotExist:
+            return None

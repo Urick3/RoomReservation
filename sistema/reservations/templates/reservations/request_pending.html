@@ -32,60 +32,46 @@
                 </svg></button>
             </div>
         </div>     
-        <div class="container">    
+        <div class="container">
+            {% for reserva in reservas %}    
             <div class="card p-3 mb-3 border-2">
                 <div class="row">    
                     <div class="col">    
-                        <h5 class="card-title">Adalberto Torres</h5>    
+                        <h5 class="card-title">{{reserva.get_teacher_username}}</h5>    
                     </div>    
                     <div class="col">
-                        <h5 class="text-end">Sala: LAB102</h5>
+                        <h5 class="text-end">{{reserva.room}}</h5>
                     </div>
                 </div>    
-                <p class="f text-start mt-1" style="font-size: 15px; color: dimgray;">Data: 30/09 10:00-11:00</p>
+                <p class="f text-start mt-1" style="font-size: 15px; color: dimgray;">Data: {{reserva.date}} | {{reserva.hour}}</p>
                 <div class="card-body">
                     <p class="card-text"></p>
                     <div class="text-center">
-                        <a href="#" class="btn btn-success px-3" style="margin-right: 100px;">Aceitar</a>
-                        <a href="#" class="btn btn-danger px-3">Rejeitar</a>
+                        <form method="post" action="{% url 'manage_solicitation' reserva.id %}">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="approved" class="btn btn-success px-3" style="margin-right: 100px;">Aceitar</button>
+                            <button type="submit" name="action" value="rejected" class="btn btn-danger px-3">Rejeitar</button>
+                        </form>
                     </div>
                 </div>    
             </div>
-            <div class="card p-3 mb-3 border-2">
-                <div class="row">    
-                    <div class="col">    
-                        <h5 class="card-title">Paulo André</h5>    
-                    </div>    
-                    <div class="col">
-                        <h5 class="text-end">Sala: LAB102</h5>
-                    </div>
-                </div>    
-                <p class="f text-start mt-1" style="font-size: 15px; color: dimgray;">Data: 30/09 10:00-11:00</p>
-                <div class="card-body">
-                    <p class="card-text"></p>
-                    <div class="text-center">
-                        <a href="#" class="btn btn-success px-3" style="margin-right: 100px;">Aceitar</a>
-                        <a href="#" class="btn btn-danger px-3">Rejeitar</a>
-                    </div>
-                </div>    
-            </div>
-            <div class="card p-3 mb-3 border-2">
-                <div class="row">    
-                    <div class="col">    
-                        <h5 class="card-title">Fernando Oliveira da Silva</h5>    
-                    </div>    
-                    <div class="col">
-                        <h5 class="text-end">Sala: LAB102</h5>
-                    </div>
-                </div>    
-                <p class="f text-start mt-1" style="font-size: 15px; color: dimgray;">Data: 30/09 10:00-11:00</p>
-                <div class="card-body">
-                    <p class="card-text"></p>
-                    <div class="text-center">
-                        <a href="#" class="btn btn-success px-3" style="margin-right: 100px;">Aceitar</a>
-                        <a href="#" class="btn btn-danger px-3">Rejeitar</a>
-                    </div>
-                </div>    
+            {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if reservas.has_previous %}
+                        <a href="?page=1">&laquo; primeira</a>
+                        <a href="?page={{ reservas.previous_page_number }}">anterior</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Página {{ reservas.number }} de {{ reservas.paginator.num_pages }}.
+                    </span>
+        
+                    {% if reservas.has_next %}
+                        <a href="?page={{ reservas.next_page_number }}">próxima</a>
+                        <a href="?page={{ reservas.paginator.num_pages }}">última &raquo;</a>
+                    {% endif %}
+                </span>
             </div>
         </div>    
     </section>

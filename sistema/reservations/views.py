@@ -1,17 +1,86 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-# from rest_framework.response import Response
-# from rest_framework.decorators import api_view
-from .service import ReservationService
-from .models import Room
+from django.utils.decorators import method_decorator
+from django.views import View
+from reservations.service import ReservationService, HourService
+from users.decorators import *
+from rooms.service import RoomService
+from datetime import datetime
 
-# Create your views here.
+@method_decorator(user_is_teacher, name='dispatch')
+class CalendarReservation(View):
+    
+    def get(self, request, *args, **kwargs):
+        rooms = RoomService.get_all_rooms()
+        
+        return render(request, 'reservations/calendar.html', {'rooms': rooms})
+    
+    def post(self, request, *args, **kwargs):
+        room = request.POST.get('room')
+        hours = request.POST.getlist('hours')  
+        date = request.POST.get('date')
+        date_american = datetime.strptime(date, "%d/%m/%Y")
+
+        if room  != None:
+            room = RoomService.get_room_details(room)
+
+        for hour in hours:
+            hour = HourService.get_hour_id_by_range(hour)
+            ReservationService.create_new_reservation(room, request.user, hour, date_american)
+        
+        return redirect('calendar')
+    
+
+@method_decorator(user_is_teacher, name='dispatch')
+class ListReservation(View):
+    
+    def get(self, request, *args, **kwargs):
+        reservas = ReservationService.get_user_reservations(request.user,request.GET.get('page', 1),20)
+        
+        return render(request, 'reservations/requests.html', {'reservas': reservas})
+    
+    def post(self, request, *args, **kwargs):
+        pass
+
+@method_decorator(user_is_manager, name='dispatch')
+class ListReservationPending(View):
+    
+    def get(self, request, *args, **kwargs):
+        reservas = ReservationService.list_pending_reservations_all(request.GET.get('page', 1),20)
+        
+        return render(request, 'reservations/request_pending.html', {'reservas': reservas})
+    
+    def post(self, request, *args, **kwargs):
+        pass
+
+@method_decorator(user_is_manager, name='dispatch')
+class ManageSolicitationView(View):
+    
+    def post(self, request, *args, **kwargs):
+        solicitation_id = kwargs.get('id')
+        action = request.POST.get('action')
+ 
+        solicitation = ReservationService.get_reservation_details(solicitation_id)
+        if solicitation is None:
+            return redirect('requests_pending')
+
+        # Verifica a ação e atualiza o status
+        if action == 'approved':
+            ReservationService.approved_or_rejected_reservation(solicitation.id, request.user, 'approved')
+        elif action == 'rejected':
+            ReservationService.approved_or_rejected_reservation(solicitation.id, request.user, 'rejected') 
+        else:
+            return redirect('requests_pending')  
+
+        return redirect('requests_pending')
+
+
+
+
 def calendar_manager(request):
     return render(request, 'reservations/calendar_ges.html')
 
-def calendar_teacher(request):
-    return render(request, 'reservations/calendar.html')
 
 def all_requests(request):
     return render(request, 'reservations/total_request.html')
@@ -25,15 +94,5 @@ def requests(request):
 def hours(request):
     return render(request, 'reservations/hours.html')
 
-# @login_required(login_url='/login/')
-# @api_view(['GET'])
-# def check_available_hours(request, room_id, date):
-#     try:
-#         room = Room.objects.get(id=room_id)
-#         available_hours = ReservationService.list_available_hours_for_date(room, date)
-#         return Response({
-#             'available_hours': list(available_hours.values('id', 'range_hour'))
-#         })
-#     except Room.DoesNotExist:
-#         return Response({'error': 'Room not found'}, status=404)
+
 
