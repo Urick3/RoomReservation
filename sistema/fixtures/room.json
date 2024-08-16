@@ -1,0 +1,129 @@
+[
+    {
+        "model": "rooms.room", 
+        "pk": 1,
+        "fields":{
+            "name": "SALA 01 - M:6/T:2" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 2,
+        "fields":{
+            "name": "SALA 02 - M:7/T:3" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 3,
+        "fields":{
+            "name": "SALA 03 - M:8/T:4" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 4,
+        "fields":{
+            "name": "SALA 04 - M:9/M:5" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 5,
+        "fields":{
+            "name": "SALA 05 - EM:1°" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 6,
+        "fields":{
+            "name": "SALA 06 - EM:2°" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 7,
+        "fields":{
+            "name": "SALA 07 - EM:3°" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 8,
+        "fields":{
+            "name": "SALA 08" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 9,
+        "fields":{
+            "name": "LABORATÓRIO 102" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 10,
+        "fields":{
+            "name": "LABORATÓRIO 103" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 11,
+        "fields":{
+            "name": "AUDITÓRIO" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 12,
+        "fields":{
+            "name": "OFICINA DE COSTURA" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 13,
+        "fields":{
+            "name": "OFICINA DE MODELAGEM" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 14,
+        "fields":{
+            "name": "SENAI LAB" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 15,
+        "fields":{
+            "name": "ROBÓTICA" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 16,
+        "fields":{
+            "name": "LABORATÓRIO FÍSICO QUÍMICO" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 17,
+        "fields":{
+            "name": "SALA DE ACOLHIMENTO" 
+        }
+    },
+    {
+        "model": "rooms.room", 
+        "pk": 18,
+        "fields":{
+            "name": "QUADRA" 
+        }
+    }
+   
+]
