@@ -8,6 +8,5 @@ urlpatterns = [
     path('total/request/', all_requests, name='total_request'),
     path('requests/', requests, name='requests'),
     path('horas/', hours, name='hours'),
-    path('api/check-availability/<int:room_id>/<str:date>/', check_available_hours, name='check-availability'),
 
 ]

@@ -76,10 +76,10 @@ async function date_click(date, element) {
         activeDate.classList.remove("active-date");
     }
     element.classList.add("active-date");
-
+    
     // Chamar a API para obter os dados das horas disponíveis
     try {
-        const response = await fetch(`reservas/api/check-availability/1/${date.toISOString().split('T')[0]}/`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/check-availability/1/${date.toISOString().split('T')[0]}/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,16 +93,16 @@ async function date_click(date, element) {
         const data = await response.json();
         console.log('Horas disponíveis:', data.available_hours);
 
-        // Aqui você pode preencher o formulário ou exibir as horas disponíveis
+        // Exibir os dados na dialog com checklist
         if (data.available_hours.length > 0) {
             show_event_form({
                 "occasion": "Horas disponíveis em " + date.toLocaleDateString(),
-                "details": "Horas disponíveis: " + data.available_hours.map(hour => hour.range_hour).join(", ")
+                "details": data.available_hours.map(hour => hour.range_hour) // Passa como array de strings
             });
         } else {
             show_event_form({
                 "occasion": "Nenhuma hora disponível em " + date.toLocaleDateString(),
-                "details": "Nenhuma hora disponível para reserva."
+                "details": []
             });
         }
 
@@ -110,7 +110,7 @@ async function date_click(date, element) {
         console.error('Erro ao chamar a API:', error);
         show_event_form({
             "occasion": "Erro ao obter dados",
-            "details": "Não foi possível obter os dados do servidor."
+            "details": []
         });
     }
 }
@@ -153,11 +153,55 @@ function show_event_form(data) {
     dialog.style.display = "block";
 
     document.getElementById("name").value = data.occasion;
-    document.getElementById("count").value = 100;  // Exemplo de preenchimento
+
+    // Limpar o conteúdo anterior
+    var checklistContainer = document.getElementById("checklist-container");
+    checklistContainer.innerHTML = "";  // Limpar o conteúdo anterior
+
+    // Se houver detalhes (ou seja, horas disponíveis), criar checkboxes e dividir em duas colunas
+    if (data.details && Array.isArray(data.details)) {
+        var row = document.createElement("div");
+        row.className = "row";
+
+        var col1 = document.createElement("div");
+        col1.className = "col-6";
+
+        var col2 = document.createElement("div");
+        col2.className = "col-6";
+
+        data.details.forEach(function(item, index) {
+            var checkboxItem = document.createElement("div");
+            checkboxItem.className = "form-check";
+
+            var checkbox = document.createElement("input");
+            checkbox.className = "form-check-input";
+            checkbox.type = "checkbox";
+            checkbox.id = "hour" + index;
+            checkbox.value = item;
+
+            var label = document.createElement("label");
+            label.className = "form-check-label";
+            label.htmlFor = "hour" + index;
+            label.textContent = item;
+
+            checkboxItem.appendChild(checkbox);
+            checkboxItem.appendChild(label);
+
+            // Alternar entre as colunas
+            if (index % 2 === 0) {
+                col1.appendChild(checkboxItem);
+            } else {
+                col2.appendChild(checkboxItem);
+            }
+        });
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        checklistContainer.appendChild(row);
+    }
 
     document.getElementById("cancel-button").onclick = function() {
         document.getElementById("name").classList.remove("error-input");
-        document.getElementById("count").classList.remove("error-input");
         dialog.style.display = "none";
     };
 
