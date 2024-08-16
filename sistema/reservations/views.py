@@ -19,6 +19,11 @@ def all_requests(request):
 def pending_requests(request):
     return render(request, 'reservations/request_pending.html')
 
+def requests(request):
+    return render(request, 'reservations/requests.html')
+
+def hours(request):
+    return render(request, 'reservations/hours.html')
 
 @login_required(login_url='/login/')
 @api_view(['GET'])
@@ -31,3 +36,4 @@ def check_available_hours(request, room_id, date):
         })
     except Room.DoesNotExist:
         return Response({'error': 'Room not found'}, status=404)
+

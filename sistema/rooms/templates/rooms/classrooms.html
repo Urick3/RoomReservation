@@ -14,7 +14,7 @@
   </style>
 {% endblock  %}
 
-{% block content%}
+{% block content %}
   <section class="py-5">
       <div class="header position-relative mb-5">
           <h1 class="position-absolute top-0 start-50 translate-middle-x" style="font-family: Modestic;">SALAS</h1>
@@ -70,6 +70,6 @@
     </div>
   </section>
 
-  {% rooms/partials/_modal.html %}
+  {% include 'rooms/partials/_modal.html' %}
 
 {% endblock %}
