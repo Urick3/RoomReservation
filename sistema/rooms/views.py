@@ -3,7 +3,7 @@ from rooms.models import  *
 from rooms.forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from rooms.room_service import RoomService
+from rooms.service import RoomService
 
 def room_list_view(request):
     page = request.GET.get('page', 1)

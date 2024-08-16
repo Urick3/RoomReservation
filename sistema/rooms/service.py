@@ -1,4 +1,4 @@
-from rooms.room_repository import RoomRepository
+from rooms.repository import RoomRepository
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class RoomService:
