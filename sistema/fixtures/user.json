@@ -1,6 +1,6 @@
 [
     {
-        "model": "rooms.room", 
+        "model": "users.User", 
         "pk": 1,
         "fields":{
             "username": "Docente" ,
@@ -10,7 +10,7 @@
         }
     },
     {
-        "model": "rooms.room", 
+        "model": "users.User", 
         "pk": 2,
         "fields":{
             "username": "Gestor" ,
