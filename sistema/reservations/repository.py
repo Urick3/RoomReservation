@@ -71,6 +71,21 @@ class ReservationRepository:
             return True
         return False
     
+    @staticmethod
+    def get_reservations_by_date_and_status(date, status):
+        return Reservation.objects.filter(date=date, status=status)
+    
+    @staticmethod
+    def get_reservations_by_room_date_and_status(room, date, status):
+        """
+        Retorna reservas com um determinado status para uma sala e data específicos.
+
+        :param room: Sala para filtrar as reservas.
+        :param date: Data para filtrar as reservas.
+        :param status: Status das reservas (e.g. 'approved').
+        :return: Queryset de reservas filtradas.
+        """
+        return Reservation.objects.filter(room=room, date=date, status=status)
 
 
 
@@ -111,3 +126,14 @@ class HourRepository:
             hour.delete()
             return True
         return False
+    
+    @staticmethod
+    def filter_hours_excluding_ids(hours, excluded_ids):
+        """
+        Filtra horas removendo aquelas cujos IDs estão na lista de excluídos.
+
+        :param hours: Queryset de horas para filtrar.
+        :param excluded_ids: Lista de IDs a serem excluídos.
+        :return: Queryset de horas filtradas.
+        """
+        return hours.exclude(id__in=excluded_ids)

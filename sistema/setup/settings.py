@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('edu'),
-        'USER': env('root'),
-        'PASSWORD': env(''),
-        'HOST': env('localhost'),
-        'PORT': env('3306'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT')
     }
 }
 
@@ -152,10 +152,10 @@ AUTHENTICATION_BACKENDS = [
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Host do servidor SMTP
-EMAIL_PORT = 587  # Porta do servidor SMTP
-EMAIL_USE_TLS = True  # Use TLS para encriptar a conexão
-EMAIL_HOST_USER = 'seu_email@gmail.com'  # Seu email
-EMAIL_HOST_PASSWORD = 'sua_senha'  # Sua senha de email
+EMAIL_HOST = env('EMAIL_HOST')  # Host do servidor SMTP
+EMAIL_PORT = env('EMAIL_PORT') # Porta do servidor SMTP
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', default=True) # Use TLS para encriptar a conexão
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Seu email
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Sua senha de email
 
-DEFAULT_FROM_EMAIL = 'seu_email@gmail.com'  # Email padrão para envio de mensagens
+DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')  # Email padrão para envio de mensagens
