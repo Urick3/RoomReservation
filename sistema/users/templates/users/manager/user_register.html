@@ -8,14 +8,14 @@
 {% block content %}
     <section>
         <!-- Solicitações -->
-        <h1 style="font-family: Modestic;" class="text-center py-5">CADASTRAR USUÁRIOS</h1>
+        <h1 style="font-family: Modestic;" class="text-center py-5">{% if object %}Editar{% else %}Adicionar{% endif %} Usuário</h1>
         <div style="background-color: #045CAC; border-radius: 10px;" class="container p-5">
             <div class="py-2">
-                <form method="post" action="{% url 'register' %}">
+                <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <div class="text-center py-3">
-                        <button type="button" style="border-radius: 7px;" class="btn btn-light">Entrar</button>
+                        <button type="submit" style="border-radius: 7px;" class="btn btn-light">Salvar</button>
                     </div>
                 </form>
             </div>

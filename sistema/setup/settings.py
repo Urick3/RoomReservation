@@ -146,8 +146,10 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard' 
 
+LOGOUT_REDIRECT_URL = 'login'
+
 AUTHENTICATION_BACKENDS = [
-    'user.backend.EmailBackend',  
+    'users.backend.EmailBackend',  
 ]
 
 

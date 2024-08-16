@@ -1,7 +1,7 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding-top: 0px;">
     <div class="container-fluid" style="background-color: #045CAC;">
-        <a class="navbar-brand" href="{% url 'dash_manager' %}">
+        <a class="navbar-brand" href="{% url 'manager_dashboard' %}">
             <img src="{% static 'assets/img/senai-logo.png' %}" alt=".." width="150px" height="40px">
         </a>
         <div>
@@ -15,10 +15,18 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'profile' %}">Configurações</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}" style="color: red ;">Sair</a></li>
+                        {% if user.is_authenticated %}
+                        <li>
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item" style="color: red ;">Sair</button>
+                            </form>
+                        </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+

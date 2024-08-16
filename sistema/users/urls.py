@@ -1,13 +1,22 @@
 from django.urls import path
 from .views import *
+from django.contrib.auth.views import LogoutView
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('index', index, name='index'),
-    path('login/', login_view, name='login'),
-    path('register/', register_view, name='register'),
-    path('logout/', logout_view, name='logout'),
-    path('manager', manager_page, name="dash_manager"),
-    path('teacher', teacher_page, name="dash_teacher"),
-    path('users/list', users_list, name='user_list'),
+    path('', CustomLoginView.as_view(), name='index'),#ok
+    path('login/', CustomLoginView.as_view(), name='login'),#ok
+    path('logout/', LogoutView.as_view(), name='logout'),#ok
+    path('dashboard/gerente/', manager_page, name="manager_dashboard"),#ok
+    path('dashboard/docente/', teacher_page, name="teacher_dashboard"),#ok
     path('profile', profile, name='profile'),
+    path('listar/usuarios/', UserListView.as_view(), name='user_list'),#ok
+    path('adicionar/usuarios/', UserCreateView.as_view(), name='user_add'),#ok
+    path('editar/usuario/<int:pk>/', UserUpdateView.as_view(), name='user_edit'),#ok
+    path('deletar/ususario/<int:pk>/', UserDeleteView.as_view(), name='user_delete'),#ok
+
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

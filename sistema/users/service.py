@@ -1,4 +1,4 @@
-from RoomReservation.sistema.users.repository import UserRepository
+from users.repository import UserRepository
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class UserService:
