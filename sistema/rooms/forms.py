@@ -1,21 +1,20 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from rooms.models import *
+from .models import Room
 
 
-class ItensRooms(forms.ModelForm):
+class RoomsForm(forms.ModelForm):
     class Meta:
 
         model = Room
-        fields = "__all__"
+        fields = ['name']
         labels = {
-            "name": "nome",
+            "name": "Nome",
         }
         widgets = {
             'name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': "Nome da Sala",
+                    'placeholder': "Nome da Sala"
                 }
-            ),
+            )
         }
