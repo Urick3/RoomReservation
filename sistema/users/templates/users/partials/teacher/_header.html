@@ -4,6 +4,7 @@
         <a class="navbar-brand" href="{% url 'teacher_dashboard' %}">
             <img src="{% static 'assets/img/senai-logo.png' %}" alt=".." width="150px" height="40px">
         </a>
+        {% if user.is_authenticated %}
         <div>
             <ul class="nav justify-content-end">
                 <li class="nav-item dropdown mx-5">
@@ -15,17 +16,17 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'profile' %}">Configurações</a></li>
-                        {% if user.is_authenticated %}
                         <li>
                             <form action="{% url 'logout' %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="dropdown-item" style="color: red ;">Sair</button>
                             </form>
                         </li>
-                        {% endif %}
+                        
                     </ul>
                 </li>
             </ul>
         </div>
+        {% endif %}
     </div>
 </nav>

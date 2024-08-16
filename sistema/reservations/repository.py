@@ -76,6 +76,11 @@ class ReservationRepository:
         return Reservation.objects.filter(date=date, status=status)
     
     @staticmethod
+    def get_reservations_by_user_id(user_id):
+        """Retorna reservas de um usuário específico."""
+        return Reservation.objects.filter(teacher_id=user_id)
+    
+    @staticmethod
     def get_reservations_by_room_date_and_status(room, date, status):
         """
         Retorna reservas com um determinado status para uma sala e data específicos.
@@ -137,3 +142,11 @@ class HourRepository:
         :return: Queryset de horas filtradas.
         """
         return hours.exclude(id__in=excluded_ids)
+    
+    @staticmethod
+    def get_hour_by_range(range_hour):
+        """Retorna um horário com base no intervalo de horas."""
+        try:
+            return Hour.objects.get(range_hour=range_hour)
+        except Hour.DoesNotExist:
+            return None

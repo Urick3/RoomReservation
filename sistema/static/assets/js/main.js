@@ -72,6 +72,8 @@ function days_in_month(month, year) {
 
 async function date_click(date, element) {
     var activeDate = document.getElementsByClassName("active-date")[0];
+    var selectElement = document.getElementById('list_room');
+    var room = selectElement.value;
     if (activeDate) {
         activeDate.classList.remove("active-date");
     }
@@ -79,7 +81,7 @@ async function date_click(date, element) {
     
     // Chamar a API para obter os dados das horas disponíveis
     try {
-        const response = await fetch(`http://127.0.0.1:8000/api/check-availability/1/${date.toISOString().split('T')[0]}/`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/check-availability/${room}/${date.toISOString().split('T')[0]}/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,8 +93,9 @@ async function date_click(date, element) {
         }
 
         const data = await response.json();
-        console.log('Horas disponíveis:', data.available_hours);
-
+        
+        var date_input = document.getElementById('date');
+        date_input.value = date.toLocaleDateString();
         // Exibir os dados na dialog com checklist
         if (data.available_hours.length > 0) {
             show_event_form({
@@ -176,6 +179,7 @@ function show_event_form(data) {
             var checkbox = document.createElement("input");
             checkbox.className = "form-check-input";
             checkbox.type = "checkbox";
+            checkbox.name = "hours";
             checkbox.id = "hour" + index;
             checkbox.value = item;
 
@@ -207,7 +211,7 @@ function show_event_form(data) {
 
     document.getElementById("ok-button").onclick = function() {
         dialog.style.display = "none";
-        alert("Evento salvo!");  // Apenas para simular o salvamento
+        alert("Solicitação enviada!");  // Apenas para simular o salvamento
     };
 }
 
@@ -229,6 +233,12 @@ const months = [
 function mostardiv() {
     var div = document.getElementById("calen");
     div.style.visibility = "visible";
+    
+    var selectElement = document.getElementById('list_room');
+    var selectedValue = selectElement.value;
+
+    var hiddenField = document.getElementById('room');
+    hiddenField.value = selectedValue;
 }
 
 function mostardivprof() {

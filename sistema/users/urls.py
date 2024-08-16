@@ -9,11 +9,11 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),#ok
     path('dashboard/gerente/', manager_page, name="manager_dashboard"),#ok
     path('dashboard/docente/', teacher_page, name="teacher_dashboard"),#ok
-    path('profile', profile, name='profile'),
     path('listar/usuarios/', UserListView.as_view(), name='user_list'),#ok
     path('adicionar/usuarios/', UserCreateView.as_view(), name='user_add'),#ok
     path('editar/usuario/<int:pk>/', UserUpdateView.as_view(), name='user_edit'),#ok
     path('deletar/ususario/<int:pk>/', UserDeleteView.as_view(), name='user_delete'),#ok
+    path('profile', profile, name='profile'),
 
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

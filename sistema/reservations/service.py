@@ -143,6 +143,19 @@ class ReservationService:
 
         return available_hours
 
+    @staticmethod
+    def get_user_reservations(user_id, page=1, per_page=10):
+        """Retorna todas as reservas de um usuário específico."""
+        all_reservations = ReservationRepository.get_reservations_by_user_id(user_id)
+        paginator = Paginator(all_reservations, per_page)
+        try:
+            reservations = paginator.page(page)
+        except PageNotAnInteger:
+            reservations = paginator.page(1)
+        except EmptyPage:
+            reservations = paginator.page(paginator.num_pages)
+
+        return reservations
 
 
 class HourService:
@@ -205,6 +218,20 @@ class HourService:
         :return: Queryset de horas disponíveis.
         """
         return HourRepository.filter_hours_excluding_ids(all_hours, occupied_hour_ids)
+    
+    @staticmethod
+    def get_hour_id_by_range(range_hour):
+        """
+        Obtém o ID de um horário com base no intervalo de horas.
+
+        :param range_hour: Intervalo de horas do horário.
+        :return: ID do horário ou None se não encontrado.
+        """
+        hour = HourRepository.get_hour_by_range(range_hour)
+        if hour:
+            return hour
+        else:
+            return None
 
 
 
