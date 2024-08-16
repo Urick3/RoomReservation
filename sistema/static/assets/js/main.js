@@ -22,8 +22,6 @@ document.addEventListener("DOMContentLoaded", function() {
     activeMonth.classList.add("active-month");
 
     init_calendar(date);
-
-    //show_image_placeholder();
 });
 
 function init_calendar(date) {
@@ -59,7 +57,7 @@ function init_calendar(date) {
             curr_date.className = "table-date";
             curr_date.textContent = day;
             curr_date.addEventListener("click", function() {
-                date_click(date, this);
+                date_click(new Date(year, month, this.textContent), this);
             });
         }
         row.appendChild(curr_date);
@@ -72,22 +70,49 @@ function days_in_month(month, year) {
     return new Date(year, month + 1, 0).getDate();
 }
 
-function date_click(date, element) {
+async function date_click(date, element) {
     var activeDate = document.getElementsByClassName("active-date")[0];
     if (activeDate) {
         activeDate.classList.remove("active-date");
     }
     element.classList.add("active-date");
 
-    // Simular uma chamada à API e preencher o formulário com dados fictícios
-    var day = parseInt(element.textContent);
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    var data = {
-        "occasion": "Evento para " + day + "/" + month + "/" + year,
-        "details": "Detales do evento aqui..."
-    };
-    show_event_form(data);
+    // Chamar a API para obter os dados das horas disponíveis
+    try {
+        const response = await fetch(`reservas/api/check-availability/1/${date.toISOString().split('T')[0]}/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Horas disponíveis:', data.available_hours);
+
+        // Aqui você pode preencher o formulário ou exibir as horas disponíveis
+        if (data.available_hours.length > 0) {
+            show_event_form({
+                "occasion": "Horas disponíveis em " + date.toLocaleDateString(),
+                "details": "Horas disponíveis: " + data.available_hours.map(hour => hour.range_hour).join(", ")
+            });
+        } else {
+            show_event_form({
+                "occasion": "Nenhuma hora disponível em " + date.toLocaleDateString(),
+                "details": "Nenhuma hora disponível para reserva."
+            });
+        }
+
+    } catch (error) {
+        console.error('Erro ao chamar a API:', error);
+        show_event_form({
+            "occasion": "Erro ao obter dados",
+            "details": "Não foi possível obter os dados do servidor."
+        });
+    }
 }
 
 function month_click(event) {
@@ -142,11 +167,6 @@ function show_event_form(data) {
     };
 }
 
-/*function show_image_placeholder() {
-    var eventsContainer = document.getElementsByClassName("events-container")[0];
-    eventsContainer.innerHTML = "<img src='path_to_your_image.jpg' alt='Placeholder Image' style='width: 100%; height: auto;'>";
-}*/
-
 const months = [
     "January", 
     "February", 
@@ -162,7 +182,6 @@ const months = [
     "December"
 ];
 
-
 function mostardiv() {
     var div = document.getElementById("calen");
     div.style.visibility = "visible";
@@ -171,25 +190,4 @@ function mostardiv() {
 function mostardivprof() {
     var div = document.getElementById("prof");
     div.style.visibility = "visible";
-}
-
-async function checkAvailableHours(roomId, date) {
-    const url = `/api/check-availability/${roomId}/${date}/`;
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`  // Se estiver usando token de autenticação
-        },
-    });
-
-    if (!response.ok) {
-        if (response.status === 401) {
-            window.location.href = '/login/';  // Redireciona para a página de login se não autenticado
-        }
-        throw new Error(`Erro: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
 }

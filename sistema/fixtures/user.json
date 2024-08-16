@@ -1,6 +1,7 @@
 [
     {
         "model": "users.user", 
+
         "pk": 1,
         "fields":{
             "username": "Docente" ,
@@ -11,6 +12,7 @@
     },
     {
         "model": "users.user", 
+
         "pk": 2,
         "fields":{
             "username": "Gestor" ,
