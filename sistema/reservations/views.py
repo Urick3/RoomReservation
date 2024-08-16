@@ -43,6 +43,39 @@ class ListReservation(View):
     def post(self, request, *args, **kwargs):
         pass
 
+@method_decorator(user_is_manager, name='dispatch')
+class ListReservationPending(View):
+    
+    def get(self, request, *args, **kwargs):
+        reservas = ReservationService.list_pending_reservations_all(request.GET.get('page', 1),20)
+        
+        return render(request, 'reservations/request_pending.html', {'reservas': reservas})
+    
+    def post(self, request, *args, **kwargs):
+        pass
+
+@method_decorator(user_is_manager, name='dispatch')
+class ManageSolicitationView(View):
+    
+    def post(self, request, *args, **kwargs):
+        solicitation_id = kwargs.get('id')
+        action = request.POST.get('action')
+ 
+        solicitation = ReservationService.get_reservation_details(solicitation_id)
+        if solicitation is None:
+            return redirect('requests_pending')
+
+        # Verifica a ação e atualiza o status
+        if action == 'approved':
+            ReservationService.approved_or_rejected_reservation(solicitation.id, request.user, 'approved')
+        elif action == 'rejected':
+            ReservationService.approved_or_rejected_reservation(solicitation.id, request.user, 'rejected') 
+        else:
+            return redirect('requests_pending')  
+
+        return redirect('requests_pending')
+
+
 
 
 def calendar_manager(request):

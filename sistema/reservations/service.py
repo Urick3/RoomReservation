@@ -31,9 +31,9 @@ class ReservationApprovalService:
         return ReservationApprovalRepository.get_approval_by_id(approval_id)
 
     @staticmethod
-    def create_new_approval(reservation, manager):
+    def create_new_approval(reservation, manager, status):
         """Cria uma nova aprovação de reserva."""
-        return ReservationApprovalRepository.create_approval(reservation, manager)
+        return ReservationApprovalRepository.create_approval(reservation, manager, status)
     
 
 
@@ -66,7 +66,12 @@ class ReservationService:
     @staticmethod
     def get_reservation_details(reservation_id):
         """Obtém os detalhes de uma reserva específica."""
-        return ReservationRepository.get_reservation_by_id(reservation_id)
+        reservation = ReservationRepository.get_reservation_by_id(reservation_id)
+        if reservation:
+            return reservation
+        else:
+            return None
+
 
     @staticmethod
     def create_new_reservation(room, teacher, hour, date, status='pending'):
@@ -84,9 +89,9 @@ class ReservationService:
         return ReservationRepository.delete_reservation(reservation_id)
     
     @staticmethod
-    def approve_reservation(reservation_id, manager):
+    def approved_or_rejected_reservation(reservation_id, manager, status):
         """
-        Aprova uma reserva pendente. Atualiza o status da reserva e cria um registro de aprovação.
+        Aprova ou reprova uma reserva pendente. Atualiza o status da reserva e cria um registro de aprovação.
 
         :param reservation_id: ID da reserva a ser aprovada.
         :param manager: Instância do usuário gestor que está aprovando a reserva.
@@ -99,14 +104,15 @@ class ReservationService:
                 return {"error": "Reserva não está em estado pendente."}
 
             # Atualiza o status da reserva para 'approved'
-            updated_reservation = ReservationRepository.update_reservation(reservation_id, status='approved')
+            updated_reservation = ReservationService.update_existing_reservation(reservation_id, status=status)
 
             # Cria um registro de aprovação
-            ReservationApprovalService.create_new_approval(reservation=updated_reservation, manager=manager)
+            ReservationApprovalService.create_new_approval(reservation=updated_reservation, manager=manager, status=status)
 
             return updated_reservation
 
-        except ReservationApprovalService.DoesNotExist:
+        except ValueError as e :
+            #print(e)
             return {"error": "Reserva não encontrada."}
 
     @staticmethod
@@ -119,6 +125,25 @@ class ReservationService:
         """
         return ReservationRepository.get_reservations_by_date_and_status(date, 'pending')
 
+    @staticmethod
+    def list_pending_reservations_all(page=1, per_page=10):
+        """
+        Lista todas as reservas pendentes para uma data específica.
+
+        :param date: Data para buscar as reservas pendentes.
+        :return: Lista de reservas pendentes.
+        """
+        all_reservations = ReservationRepository.get_reservations_by_status('pending')
+        paginator = Paginator(all_reservations, per_page)
+
+        try:
+            reservations = paginator.page(page)
+        except PageNotAnInteger:
+            reservations = paginator.page(1)
+        except EmptyPage:
+            reservations = paginator.page(paginator.num_pages)
+
+        return reservations
 
     @staticmethod
     def list_available_hours_for_date(room, date):

@@ -33,7 +33,7 @@
                           <h5 class="card-title text-start">{{reserva.room}}</h5>
                           <hr>
                           <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Data/Hora:</p>
-                          <h5 class="card-title text-start" style="font-size: 16px;">{{reserva.hour}}</h5>
+                          <h5 class="card-title text-start" style="font-size: 16px;">{{reserva.date}} | {{reserva.hour}}</h5>
                           <hr>
                           <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Status:</p>
                           <h5 class="card-title text-start" style="font-size: 16px;">{{reserva.status}}</h5>
@@ -43,18 +43,18 @@
                   {% endfor %}
                   <div class="pagination">
                     <span class="step-links">
-                        {% if rooms.has_previous %}
+                        {% if reservas.has_previous %}
                             <a href="?page=1">&laquo; primeira</a>
-                            <a href="?page={{ rooms.previous_page_number }}">anterior</a>
+                            <a href="?page={{ reservas.previous_page_number }}">anterior</a>
                         {% endif %}
             
                         <span class="current">
-                            Página {{ rooms.number }} de {{ rooms.paginator.num_pages }}.
+                            Página {{ reservas.number }} de {{ reservas.paginator.num_pages }}.
                         </span>
             
-                        {% if rooms.has_next %}
-                            <a href="?page={{ rooms.next_page_number }}">próxima</a>
-                            <a href="?page={{ rooms.paginator.num_pages }}">última &raquo;</a>
+                        {% if reservas.has_next %}
+                            <a href="?page={{ reservas.next_page_number }}">próxima</a>
+                            <a href="?page={{ reservas.paginator.num_pages }}">última &raquo;</a>
                         {% endif %}
                     </span>
                 </div>
