@@ -1,9 +1,24 @@
 {% extends 'users/base.html' %}
 {% load static %}
+
+{% block style %}
+    <style>
+        @media only screen and (max-width: 770px) {
+            .media{
+                width: 100% !important; 
+            }
+        }
+        @font-face {
+                font-family: Modestic;
+                src: url("{% static 'assets/fonts/modestic_sans/ModesticSans-Bold.ttf' %}") format(truetype);
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <section class="py-5">
         <!-- LOGIN -->
-        <div class="container container-media py-5" style="background-color: #045CAC; border-radius: 10px;">
+        <div class="container media py-5" style="background-color: #045CAC; border-radius: 10px;">
             <div class="text-center py-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
@@ -13,7 +28,7 @@
             <div class="text-center" style="color: white; font-family: Modestic;">
                 <h3>LOGIN</h3>
             </div>
-            <div class="container container-media" style="width: 60%;">
+            <div class="container media" style="width: 60%;">
                 <div>
                     <div class="py-2">
                         <form action="">

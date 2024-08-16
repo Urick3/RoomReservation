@@ -1,8 +1,8 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding-top: 0px;">
     <div class="container-fluid" style="background-color: #045CAC;">
-        <a class="navbar-brand" href="#">
-            <img src="{% static 'assets/img/senai-logo.png' %}" alt=".." width="120px" height="40px">
+        <a class="navbar-brand" href="{% url 'dash_manager' %}">
+            <img src="{% static 'assets/img/senai-logo.png' %}" alt=".." width="150px" height="40px">
         </a>
         <div>
             <ul class="nav justify-content-end">
@@ -14,8 +14,8 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Configurações</a></li>
-                        <li><a class="dropdown-item" href="#" style="color: red ;">Sair</a></li>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Configurações</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}" style="color: red ;">Sair</a></li>
                     </ul>
                 </li>
             </ul>

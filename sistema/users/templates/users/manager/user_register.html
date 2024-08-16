@@ -1,30 +1,23 @@
 {% extends 'users/base.html' %}
 {% load static %}
+
+{% block nav %}
+    {% include 'users/partials/manager/_header.html' %}
+{% endblock %}
+
 {% block content %}
     <section>
         <!-- Solicitações -->
         <h1 style="font-family: Modestic;" class="text-center py-5">CADASTRAR USUÁRIOS</h1>
         <div style="background-color: #045CAC; border-radius: 10px;" class="container p-5">
             <div class="py-2">
-                <form action="">
-                    <label style="color: #fff;" for="email">Email:</label>
-                    <input class="form-control" type="text" placeholder="Insira seu Email" aria-label="default input example">
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="text-center py-3">
+                        <button type="button" style="border-radius: 7px;" class="btn btn-light">Entrar</button>
+                    </div>
                 </form>
-            </div>
-            <div class="py-2">
-                <form action="">
-                    <label style="color: #fff;" for="email">Nome:</label>
-                    <input class="form-control" type="text" placeholder="Insira seu Nome" aria-label="default input example">
-                </form>
-            </div>
-            <div class="py-2">
-                <form action="">
-                    <label style="color: #fff;" for="email">Senha:</label>
-                    <input class="form-control" type="text" placeholder="Insira seu Senha" aria-label="default input example">
-                </form>
-            </div>
-            <div class="text-center py-3">
-                <button type="button" style="border-radius: 7px;" class="btn btn-light">Entrar</button>
             </div>
         </div>
     </section>
