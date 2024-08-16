@@ -173,3 +173,23 @@ function mostardivprof() {
     div.style.visibility = "visible";
 }
 
+async function checkAvailableHours(roomId, date) {
+    const url = `/api/check-availability/${roomId}/${date}/`;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`  // Se estiver usando token de autenticação
+        },
+    });
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            window.location.href = '/login/';  // Redireciona para a página de login se não autenticado
+        }
+        throw new Error(`Erro: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+}
