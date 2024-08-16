@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views import View
-from reservations.service import ReservationService, HourService
+from reservations.service import ReservationService, HourService, ReservationApprovalService
+from users.service import UserService
 from users.decorators import *
 from rooms.service import RoomService
 from datetime import datetime
@@ -76,10 +77,31 @@ class ManageSolicitationView(View):
         return redirect('requests_pending')
 
 
+@method_decorator(user_is_manager, name='dispatch')
+class CalendarManagerReservation(View):
+    
+    def get(self, request, *args, **kwargs):
+        rooms = RoomService.get_all_rooms()
+        users = UserService.get_all_users()
+        return render(request, 'reservations/calendar_manager.html', {'rooms': rooms, 'users': users})
+    
+    def post(self, request, *args, **kwargs):
+        room = request.POST.get('room')
+        hours = request.POST.getlist('hours')  
+        date = request.POST.get('date')
+        teacher = UserService.get_user_details(request.POST.get('teacher'))
+        date_american = datetime.strptime(date, "%d/%m/%Y")
 
+        if room  != None:
+            room = RoomService.get_room_details(room)
 
-def calendar_manager(request):
-    return render(request, 'reservations/calendar_ges.html')
+        for hour in hours:
+            hour = HourService.get_hour_id_by_range(hour)
+            reservation = ReservationService.create_new_reservation(room, teacher, hour, date_american, 'approved')
+            ReservationApprovalService.create_new_approval(reservation, manager=request.user, status='approved')
+        
+        return redirect('calendar_manager')
+
 
 
 def all_requests(request):

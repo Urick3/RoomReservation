@@ -22,7 +22,14 @@
 </head>
 <body>
     {% block nav %}
+    {% if user.user_type == "manager" %}
+        {% include 'users/partials/manager/_header.html' %}
+    {% elif user.user_type == "teacher" %}
         {% include 'users/partials/teacher/_header.html' %}
+    {% else %}
+        {% include 'users/partials/_header.html' %}
+    {% endif %}
+        
     {% endblock %}
 
     {% block content %}

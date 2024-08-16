@@ -244,4 +244,10 @@ function mostardiv() {
 function mostardivprof() {
     var div = document.getElementById("prof");
     div.style.visibility = "visible";
+
+    var selectProf = document.getElementById('list_teacher');
+    var ProfValue = selectProf.value;
+
+    var hiddenProf = document.getElementById('teacher');
+    hiddenProf.value = ProfValue;
 }
