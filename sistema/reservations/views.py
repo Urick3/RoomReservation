@@ -12,3 +12,9 @@ def all_requests(request):
 
 def pending_requests(request):
     return render(request, 'reservations/request_pending.html')
+
+def requests(request):
+    return render(request, 'reservations/requests.html')
+
+def hours(request):
+    return render(request, 'reservations/hours.html')
