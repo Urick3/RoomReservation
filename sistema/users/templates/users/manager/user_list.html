@@ -38,8 +38,9 @@
                     <div class="col-sm-4 mb-3 mb-sm-0 pb-3">
                         <div class="card border-2">
                           <div class="card-body text-end">
+                            <span class="badge text-bg-secondary">{{ user.get_user_type_display }}</span>
                             <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Nome:</p>
-                            <h5 class="card-title text-start">{{ user.username }}</h5>
+                            <h5 class="card-title text-start">{{ user.username }}</h5>                           
                             <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Email:</p>
                             <h6 class="card-title text-start">{{ user.email }}</h6>
                             <hr>
