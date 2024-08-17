@@ -15,7 +15,7 @@ class CalendarReservation(View):
     def get(self, request, *args, **kwargs):
         rooms = RoomService.get_all_rooms()
         
-        return render(request, 'reservations/calendar.html', {'rooms': rooms})
+        return render(request, 'reservations/calendar_teacher.html', {'rooms': rooms})
     
     def post(self, request, *args, **kwargs):
         room = request.POST.get('room')
@@ -39,7 +39,7 @@ class ListReservation(View):
     def get(self, request, *args, **kwargs):
         reservas = ReservationService.get_user_reservations(request.user,request.GET.get('page', 1),20)
         
-        return render(request, 'reservations/requests.html', {'reservas': reservas})
+        return render(request, 'reservations/request_teacher.html', {'reservas': reservas})
     
     def post(self, request, *args, **kwargs):
         pass
@@ -102,16 +102,16 @@ class CalendarManagerReservation(View):
         
         return redirect('calendar_manager')
 
+@method_decorator(user_is_manager, name='dispatch')
+class DashboardRequestPageView(View):
+    template_name = 'reservations/dashboard_request.html'
+
+
+
 
 
 def all_requests(request):
     return render(request, 'reservations/total_request.html')
-
-def pending_requests(request):
-    return render(request, 'reservations/request_pending.html')
-
-def requests(request):
-    return render(request, 'reservations/requests.html')
 
 def hours(request):
     return render(request, 'reservations/hours.html')
