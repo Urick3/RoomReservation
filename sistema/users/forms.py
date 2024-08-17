@@ -25,11 +25,17 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'user_type', 'password']
+        labels = {
+            'username': 'Nome de Usuário',
+            'email': 'Email',
+            'user_type': 'Tipo de Usuário',
+            'password': 'Senha',
+        }
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome de Usuário'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
-            'user_type': forms.Select(attrs={'class': 'form-control'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome de Usuário', }),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email', }),
+            'user_type': forms.Select(attrs={'class': 'form-control', }),
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha', }),
         }
 
     def save(self, commit=True):

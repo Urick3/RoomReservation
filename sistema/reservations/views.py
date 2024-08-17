@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -30,6 +31,7 @@ class CalendarReservation(View):
             hour = HourService.get_hour_id_by_range(hour)
             ReservationService.create_new_reservation(room, request.user, hour, date_american)
         
+        messages.success(request, "Reserva criada com sucesso!")
         return redirect('calendar')
     
 
@@ -64,14 +66,18 @@ class ManageSolicitationView(View):
  
         solicitation = ReservationService.get_reservation_details(solicitation_id)
         if solicitation is None:
+            messages.error(request, "Solicitação não encontrada.")
             return redirect('requests_pending')
 
         # Verifica a ação e atualiza o status
         if action == 'approved':
             ReservationService.approved_or_rejected_reservation(solicitation.id, request.user, 'approved')
+            messages.success(request, "Solicitação aprovada com sucesso!")
         elif action == 'rejected':
-            ReservationService.approved_or_rejected_reservation(solicitation.id, request.user, 'rejected') 
+            ReservationService.approved_or_rejected_reservation(solicitation.id, request.user, 'rejected')
+            messages.success(request, "Solicitação rejeitada com sucesso!") 
         else:
+            messages.error(request, "Ação inválida.")
             return redirect('requests_pending')  
 
         return redirect('requests_pending')
@@ -100,11 +106,15 @@ class CalendarManagerReservation(View):
             reservation = ReservationService.create_new_reservation(room, teacher, hour, date_american, 'approved')
             ReservationApprovalService.create_new_approval(reservation, manager=request.user, status='approved')
         
+        messages.success(request, "Reserva criada e aprovada com sucesso!")
         return redirect('calendar_manager')
 
 @method_decorator(user_is_manager, name='dispatch')
 class DashboardRequestPageView(View):
     template_name = 'reservations/dashboard_request.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
 
 
