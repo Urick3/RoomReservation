@@ -22,8 +22,6 @@ document.addEventListener("DOMContentLoaded", function() {
     activeMonth.classList.add("active-month");
 
     init_calendar(date);
-
-    //show_image_placeholder();
 });
 
 function init_calendar(date) {
@@ -59,7 +57,7 @@ function init_calendar(date) {
             curr_date.className = "table-date";
             curr_date.textContent = day;
             curr_date.addEventListener("click", function() {
-                date_click(date, this);
+                date_click(new Date(year, month, this.textContent), this);
             });
         }
         row.appendChild(curr_date);
@@ -72,22 +70,52 @@ function days_in_month(month, year) {
     return new Date(year, month + 1, 0).getDate();
 }
 
-function date_click(date, element) {
+async function date_click(date, element) {
     var activeDate = document.getElementsByClassName("active-date")[0];
+    var selectElement = document.getElementById('list_room');
+    var room = selectElement.value;
     if (activeDate) {
         activeDate.classList.remove("active-date");
     }
     element.classList.add("active-date");
+    
+    // Chamar a API para obter os dados das horas disponíveis
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/check-availability/${room}/${date.toISOString().split('T')[0]}/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
 
-    // Simular uma chamada à API e preencher o formulário com dados fictícios
-    var day = parseInt(element.textContent);
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    var data = {
-        "occasion": "Evento para " + day + "/" + month + "/" + year,
-        "details": "Detales do evento aqui..."
-    };
-    show_event_form(data);
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        var date_input = document.getElementById('date');
+        date_input.value = date.toLocaleDateString();
+        // Exibir os dados na dialog com checklist
+        if (data.available_hours.length > 0) {
+            show_event_form({
+                "occasion": "Horas disponíveis em " + date.toLocaleDateString(),
+                "details": data.available_hours.map(hour => hour.range_hour) // Passa como array de strings
+            });
+        } else {
+            show_event_form({
+                "occasion": "Nenhuma hora disponível em " + date.toLocaleDateString(),
+                "details": []
+            });
+        }
+
+    } catch (error) {
+        console.error('Erro ao chamar a API:', error);
+        show_event_form({
+            "occasion": "Erro ao obter dados",
+            "details": []
+        });
+    }
 }
 
 function month_click(event) {
@@ -128,24 +156,64 @@ function show_event_form(data) {
     dialog.style.display = "block";
 
     document.getElementById("name").value = data.occasion;
-    document.getElementById("count").value = 100;  // Exemplo de preenchimento
+
+    // Limpar o conteúdo anterior
+    var checklistContainer = document.getElementById("checklist-container");
+    checklistContainer.innerHTML = "";  // Limpar o conteúdo anterior
+
+    // Se houver detalhes (ou seja, horas disponíveis), criar checkboxes e dividir em duas colunas
+    if (data.details && Array.isArray(data.details)) {
+        var row = document.createElement("div");
+        row.className = "row";
+
+        var col1 = document.createElement("div");
+        col1.className = "col-6";
+
+        var col2 = document.createElement("div");
+        col2.className = "col-6";
+
+        data.details.forEach(function(item, index) {
+            var checkboxItem = document.createElement("div");
+            checkboxItem.className = "form-check";
+
+            var checkbox = document.createElement("input");
+            checkbox.className = "form-check-input";
+            checkbox.type = "checkbox";
+            checkbox.name = "hours";
+            checkbox.id = "hour" + index;
+            checkbox.value = item;
+
+            var label = document.createElement("label");
+            label.className = "form-check-label";
+            label.htmlFor = "hour" + index;
+            label.textContent = item;
+
+            checkboxItem.appendChild(checkbox);
+            checkboxItem.appendChild(label);
+
+            // Alternar entre as colunas
+            if (index % 2 === 0) {
+                col1.appendChild(checkboxItem);
+            } else {
+                col2.appendChild(checkboxItem);
+            }
+        });
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        checklistContainer.appendChild(row);
+    }
 
     document.getElementById("cancel-button").onclick = function() {
         document.getElementById("name").classList.remove("error-input");
-        document.getElementById("count").classList.remove("error-input");
         dialog.style.display = "none";
     };
 
     document.getElementById("ok-button").onclick = function() {
         dialog.style.display = "none";
-        alert("Evento salvo!");  // Apenas para simular o salvamento
+        alert("Solicitação enviada!");  // Apenas para simular o salvamento
     };
 }
-
-/*function show_image_placeholder() {
-    var eventsContainer = document.getElementsByClassName("events-container")[0];
-    eventsContainer.innerHTML = "<img src='path_to_your_image.jpg' alt='Placeholder Image' style='width: 100%; height: auto;'>";
-}*/
 
 const months = [
     "January", 
@@ -162,14 +230,24 @@ const months = [
     "December"
 ];
 
-
 function mostardiv() {
     var div = document.getElementById("calen");
     div.style.visibility = "visible";
+    
+    var selectElement = document.getElementById('list_room');
+    var selectedValue = selectElement.value;
+
+    var hiddenField = document.getElementById('room');
+    hiddenField.value = selectedValue;
 }
 
 function mostardivprof() {
     var div = document.getElementById("prof");
     div.style.visibility = "visible";
-}
 
+    var selectProf = document.getElementById('list_teacher');
+    var ProfValue = selectProf.value;
+
+    var hiddenProf = document.getElementById('teacher');
+    hiddenProf.value = ProfValue;
+}

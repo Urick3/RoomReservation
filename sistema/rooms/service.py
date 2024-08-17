@@ -42,3 +42,8 @@ class RoomService:
     def delete_room(room_id):
         """Remove uma sala do sistema."""
         return RoomRepository.delete_room(room_id)
+    
+    @staticmethod
+    def get_all_rooms():
+        """Retorna todas as salas."""
+        return RoomRepository.get_all_rooms()

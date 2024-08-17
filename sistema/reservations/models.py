@@ -26,10 +26,14 @@ class Reservation(models.Model):
     def __str__(self):
         return f"Reserva de {self.teacher} para {self.room} às {self.hour} em {self.date}"
     
+    def get_teacher_username(self):
+        return self.teacher.username
+    
 
 class ReservationApproval(models.Model):
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     manager = models.ForeignKey(User, limit_choices_to={'type_user': 'manager'}, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=Reservation.STATUS_CHOICES)
     approved_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

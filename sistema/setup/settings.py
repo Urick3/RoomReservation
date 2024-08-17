@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'rooms',
     'notifications',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -145,8 +146,10 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard' 
 
+LOGOUT_REDIRECT_URL = 'login'
+
 AUTHENTICATION_BACKENDS = [
-    'user.backend.EmailBackend',  
+    'users.backend.EmailBackend',  
 ]
 
 
@@ -159,3 +162,15 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Seu email
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Sua senha de email
 
 DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')  # Email padrão para envio de mensagens
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        #'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}

@@ -141,3 +141,16 @@ com o comando:
 python3 -c "from django.core.management.utils import 
 get_random_secret_key; print(get_random_secret_key())"
 ```
+
+## Usuários de testes
+Os dados são referentes ao arquivo user.json dapasta fixtures
+
+- Nome: Docente
+- Senha: Sesi@1234
+- Tipo: Professor
+- Email: docentesenai1234@gmail.com
+---
+- Nome: Gestor
+- Senha: Sesi@1234
+- Tipo: Gestor
+- Email: gestorsenai1234@gmail.com

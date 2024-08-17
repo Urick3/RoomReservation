@@ -1,4 +1,4 @@
-from RoomReservation.sistema.users.repository import UserRepository
+from users.repository import UserRepository
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class UserService:
@@ -27,7 +27,10 @@ class UserService:
     @staticmethod
     def get_user_details(user_id):
         """Obtém os detalhes de um usuário específico."""
-        return UserRepository.get_user_by_id(user_id)
+        try:
+            return UserRepository.get_user_by_id(user_id)
+        except UserRepository.DoesNotExist:
+            return None
 
     @staticmethod
     def create_new_user(**kwargs):
@@ -43,3 +46,8 @@ class UserService:
     def delete_user(user_id):
         """Remove um usuário do sistema."""
         return UserRepository.delete_user(user_id)
+    
+    @staticmethod
+    def get_all_users():
+        """Retorna todos os usuários."""
+        return UserRepository.get_all_users()
