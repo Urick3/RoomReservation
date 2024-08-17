@@ -4,9 +4,9 @@ from .views import *
 # Create your views here.
 
 urlpatterns = [
-    path("salas/", room_list_view, name="all_rooms"),
-    path("salas/criar/", create_rooms, name="Create"),
-    path("salas/editar/<int:rooms_id>/", edit_rooms, name="Edit"),
-    path("salas/deletar/<int:rooms_id>/", delete_rooms, name="Delete"),
+    path("listar/", RoomListView.as_view(), name="all_rooms"),
+    path("criar/", RoomCreateView.as_view(), name="create_rooms"),
+    path("editar/<int:rooms_id>/", RoomUpdateView.as_view(), name="edit_rooms"),
+    path("deletar/<int:rooms_id>/", RoomDeleteView.as_view(), name="delete_rooms"),
 
 ]
