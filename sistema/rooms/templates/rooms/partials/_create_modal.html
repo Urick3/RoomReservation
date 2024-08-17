@@ -8,14 +8,15 @@
         <div class="modal-body">
           <div class="container" style="width: 80%;">
             <div class="py-2">
-                <form action="">
-                    <label style="color: black;" for="name">Nome:</label>
-                    <input class="form-control" type="text" placeholder="Insira o nome da Sala" aria-label="default input example">
-                </form>
+                <form method="post" action="{% url 'create_rooms' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
             </div>
         </div>
         <div class="text-center py-3">
-            <button type="button" style="border-radius: 7px; background-color: #045CAC; color: white;" class="btn">Criar</button>
+            <button type="submit" style="border-radius: 7px; background-color: #045CAC; color: white;" class="btn">Cadastrar</button>
+          </form>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
     </div>
 </div>
