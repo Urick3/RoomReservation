@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 from .decorators import *
 from django.contrib.auth import authenticate, login
@@ -26,13 +27,15 @@ class CustomLoginView(View):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
+                messages.success(request, "Login realizado com sucesso!")
                 if user.user_type == 'teacher':
                     return redirect('teacher_dashboard') 
                 elif user.user_type == 'manager':
                     return redirect('manager_dashboard')  
             else:
-                form.add_error(None, "Email ou senha incorretos")
+                messages.error(request, "Email ou senha incorretos")
         return render(request, self.template_name, {'form': form})
+
 
 @method_decorator(user_is_manager, name='dispatch')
 class UserListView(ListView):
@@ -53,7 +56,13 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy('user_list')
 
     def form_valid(self, form):
+        messages.success(self.request, "Usuário criado com sucesso!")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Ocorreu um erro ao criar o usuário.")
+        return super().form_invalid(form)
+
 
 @method_decorator(user_is_manager, name='dispatch')
 class UserUpdateView(UpdateView):
@@ -67,7 +76,13 @@ class UserUpdateView(UpdateView):
 
     def form_valid(self, form):
         UserService.update_existing_user(self.object.id, **form.cleaned_data)
+        messages.success(self.request, "Usuário atualizado com sucesso!")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Ocorreu um erro ao atualizar o usuário.")
+        return super().form_invalid(form)
+
 
 @method_decorator(user_is_manager, name='dispatch')    
 class UserDeleteView(DeleteView):
@@ -80,19 +95,32 @@ class UserDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         user = self.get_object()
         UserService.delete_user(user.id)
+        messages.success(request, "Usuário excluído com sucesso!")
         return super().delete(request, *args, **kwargs)
+
+
+@method_decorator(user_is_manager, name='dispatch')
+class DashboardManagerPage(View):
+    template_name = 'users/manager/dashboard.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+
+@method_decorator(user_is_teacher, name='dispatch')
+class DashboardTeacherPage(View):
+    template_name = 'users/teacher/dashboard.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
 
 
 def profile(request):
     return render(request, 'users/profile.html')
 
-@user_is_teacher
-def teacher_page(request):
-    return render(request, 'users/teacher/dashboard.html')
 
-@user_is_manager
-def manager_page(request):
-    return render(request, 'users/manager/dashboard.html')
+
 
 
 
