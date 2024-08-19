@@ -181,6 +181,69 @@ class ReservationService:
             reservations = paginator.page(paginator.num_pages)
 
         return reservations
+    
+    @staticmethod
+    def search_reservations(search_query, page=1, per_page=10):
+        """
+        Busca reservas com base em um critério genérico e realiza a paginação dos resultados.
+
+        :param search_query: Valor inserido pelo usuário no campo de busca (pode ser ID, data, ou nome da sala).
+        :param page: Número da página atual.
+        :param per_page: Quantidade de itens por página.
+        :return: Página atual com as reservas e informações de paginação.
+        """
+        reservations = ReservationRepository.search_reservations(search_query)
+        paginator = Paginator(reservations, per_page)
+
+        try:
+            paginated_reservations = paginator.page(page)
+        except PageNotAnInteger:
+            paginated_reservations = paginator.page(1)
+        except EmptyPage:
+            paginated_reservations = paginator.page(paginator.num_pages)
+
+        return paginated_reservations
+    
+    @staticmethod
+    def list_reservations_with_approvals(page=1, per_page=10):
+        """
+        Lista todas as reservas com informações de aprovação, com paginação.
+
+        :param page: Número da página atual.
+        :param per_page: Quantidade de itens por página.
+        :return: Página atual com as reservas e informações de paginação.
+        """
+        reservations = ReservationRepository.get_reservations_with_approvals()
+        paginator = Paginator(reservations, per_page)
+
+        try:
+            paginated_reservations = paginator.page(page)
+        except PageNotAnInteger:
+            paginated_reservations = paginator.page(1)
+        except EmptyPage:
+            paginated_reservations = paginator.page(paginator.num_pages)
+
+        # Preparando os dados para retornar com as informações necessárias
+        result = []
+        for reservation in paginated_reservations:
+            approval_info = reservation.reservationapproval_set.first()
+            result.append({
+                'reservation_id': reservation.id,
+                'user_name': reservation.teacher.username,
+                'room_name': reservation.room.name,
+                'reservation_date': reservation.date,
+                'reservation_hour': reservation.hour.range_hour,
+                'manager_name': approval_info.manager.username if approval_info else None,
+                'approval_status': approval_info.status if approval_info else None,
+                'approval_date': approval_info.approved_at if approval_info else None
+            })
+
+        return {
+            'reservations': result,
+            'page': page,
+            'total_pages': paginator.num_pages,
+            'total_items': paginator.count
+        }
 
 
 class HourService:

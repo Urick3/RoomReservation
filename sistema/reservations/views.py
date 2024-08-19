@@ -9,6 +9,7 @@ from users.service import UserService
 from users.decorators import *
 from rooms.service import RoomService
 from datetime import datetime
+from reservations.forms import HourForm
 
 @method_decorator(user_is_teacher, name='dispatch')
 class CalendarReservation(View):
@@ -43,8 +44,6 @@ class ListReservation(View):
         
         return render(request, 'reservations/request_teacher.html', {'reservas': reservas})
     
-    def post(self, request, *args, **kwargs):
-        pass
 
 @method_decorator(user_is_manager, name='dispatch')
 class ListReservationPending(View):
@@ -54,8 +53,7 @@ class ListReservationPending(View):
         
         return render(request, 'reservations/request_pending.html', {'reservas': reservas})
     
-    def post(self, request, *args, **kwargs):
-        pass
+
 
 @method_decorator(user_is_manager, name='dispatch')
 class ManageSolicitationView(View):
@@ -117,14 +115,57 @@ class DashboardRequestPageView(View):
         return render(request, self.template_name)
 
 
+@method_decorator(user_is_manager, name='dispatch')
+class ListReservationManager(View):
+    template_name = 'reservations/request_total.html'
+
+    def get(self, request):
+        reservas = ReservationService.list_reservations_with_approvals(request.GET.get('page', 1),20)
+        
+        return render(request, self.template_name, {'reservas': reservas})
 
 
 
-def all_requests(request):
-    return render(request, 'reservations/total_request.html')
+class HourListView(View):
+    template_name = 'reservations/hours.html'
+    paginate_by = 10  
 
-def hours(request):
-    return render(request, 'reservations/hours.html')
+    def get(self, request, *args, **kwargs):
+        page = request.GET.get('page', 1)
+        per_page = self.paginate_by
+        hours = HourService.list_all_hours(page=page, per_page=per_page)
+        form = HourForm()
+        return render(request, self.template_name, {'hours': hours, 'form': form})
+
+class HourCreateView(View):
+    def post(self, request, *args, **kwargs):
+        form = HourForm(request.POST)
+        if form.is_valid():
+            HourService.create_new_hour(form.cleaned_data['range_hour'])
+            messages.success(request, "Hora criada com sucesso!")
+            return redirect('all_hours')
+        else:
+            messages.error(request, "Erro ao criar a hora.")
+        return redirect('all_hours')
+
+class HourUpdateView(View):
+    def post(self, request, hours_id, *args, **kwargs):
+        form = HourForm(request.POST)
+        if form.is_valid():
+            HourService.update_existing_hour(hours_id, form.cleaned_data['range_hour'])
+            messages.success(request, "Hora atualizada com sucesso!")
+        else:
+            messages.error(request, "Erro ao atualizar a hora.")
+        return redirect('all_hours')
+
+
+class HourDeleteView(View):
+    def get(self, request, hours_id, *args, **kwargs):
+        HourService.delete_hour(hours_id)
+        messages.success(request, "Hora deletada com sucesso!")
+        return redirect('all_hours')
+
+
 
 
 

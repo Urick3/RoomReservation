@@ -1,0 +1,107 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Todas Solicitações</title>
+{% endblock %}
+
+{% block nav %}
+    {% include 'users/partials/manager/_header.html' %}
+{% endblock %}
+
+{% block style %}
+    <style>
+        .header {
+            padding: 15px;
+            text-align: center;
+        }
+        @font-face {
+            font-family: Modestic;
+            src: url("{% static 'assets/fonts/modestic_sans/ModesticSans-Bold.ttf' %}") format(truetype);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section class="py-5">
+        <div class="header position-relative mb-5">
+            <h1 class="position-absolute top-0 start-50 translate-middle-x" style="font-family: Modestic;">Todas Solicitações</h1>
+            <div class="position-absolute top-0 end-0">
+                <a href="{% url 'calendar_manager' %}" class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="blue" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                </svg></a>
+            </div>
+        </div>
+        <div class="accordion container" id="accordionExample">
+            {% for reserva in  reservas.reservations %}
+            <div class="accordion-item border-2">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{reserva.reservation_id}}" aria-expanded="true" aria-controls="collapseOne">
+                    {{ reserva.user_name }} - {{ reserva.room_name }}
+                </button>
+              </h2>
+              <div id="{{reserva.reservation_id}}" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div>
+                        {% if reserva.approval_status == 'approved' %}
+                            <span class="badge text-bg-success">Aprovado</span> por: {{ reserva.manager_name }} | {{ reserva.approval_date }}</p>
+                        {% elif reserva.approval_status == 'rejected' %}
+                            <span class="badge text-bg-danger">Rejeitado</span> por: {{ reserva.manager_name }} | {{ reserva.approval_date }}</p>
+                        {% else %}
+                            <span class="badge text-bg-warning">Pendente</span>
+                        {% endif %}
+                    </div>
+                    <div class="text-center mb-3">
+                        <h5>
+                            Data: {{ reserva.reservation_date }} - {{ reserva.reservation_hour }}
+                        </h5>
+                    </div>
+                    <div class="text-center">
+                        <!--<a href="#" class="btn btn-primary px-3" style="margin-right: 100px;">Editar</a>-->
+                        <a href="#" class="btn btn-danger px-3">Cancelar</a>
+                    </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div colspan="7">Nenhuma reserva encontrada.</div>
+            {% endfor %}
+          </div>
+          <div class="pagination-container">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <!-- Exibindo a página atual e o total de páginas -->
+                    <li class="page-item disabled">
+                        <span class="page-link">Página {{ reservas.page }} de {{ reservas.total_pages }}</span>
+                    </li>
+        
+                    <!-- Link para a página anterior -->
+                    {% if reservas.page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ reservas.page|add:-1 }}" aria-label="Página Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Página Anterior</span>
+                        </a>
+                    </li>
+                    {% endif %}
+        
+                    <!-- Página atual (não clicável) -->
+                    <li class="page-item active">
+                        <span class="page-link">{{ reservas.page }}</span>
+                    </li>
+        
+                    <!-- Link para a próxima página -->
+                    {% if reservas.page < reservas.total_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ reservas.page|add:1 }}" aria-label="Próxima Página">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Próxima Página</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </section>
+    
+{% endblock %}
