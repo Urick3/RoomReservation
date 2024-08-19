@@ -43,8 +43,6 @@ class ListReservation(View):
         
         return render(request, 'reservations/request_teacher.html', {'reservas': reservas})
     
-    def post(self, request, *args, **kwargs):
-        pass
 
 @method_decorator(user_is_manager, name='dispatch')
 class ListReservationPending(View):
@@ -54,8 +52,7 @@ class ListReservationPending(View):
         
         return render(request, 'reservations/request_pending.html', {'reservas': reservas})
     
-    def post(self, request, *args, **kwargs):
-        pass
+
 
 @method_decorator(user_is_manager, name='dispatch')
 class ManageSolicitationView(View):
@@ -117,7 +114,14 @@ class DashboardRequestPageView(View):
         return render(request, self.template_name)
 
 
+@method_decorator(user_is_manager, name='dispatch')
+class ListReservationManager(View):
+    template_name = 'reservations/request_total.html'
 
+    def get(self, request):
+        reservas = ReservationService.list_reservations_with_approvals(request.GET.get('page', 1),20)
+        
+        return render(request, self.template_name, {'reservas': reservas})
 
 
 def all_requests(request):

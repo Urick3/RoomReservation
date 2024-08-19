@@ -47,3 +47,8 @@ class RoomService:
     def get_all_rooms():
         """Retorna todas as salas."""
         return RoomRepository.get_all_rooms()
+    
+    @staticmethod
+    def search_rooms(query):
+        """Realiza a busca de salas."""
+        return RoomRepository.search_rooms(query)
