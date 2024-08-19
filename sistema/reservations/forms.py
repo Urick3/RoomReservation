@@ -5,7 +5,7 @@ class HourForm(forms.ModelForm):
     class Meta:
 
         model = Hour
-        fields = 'range_hour'
+        fields = ['range_hour']
         labels = {
             'range_hour': 'horario',
         }
@@ -17,3 +17,4 @@ class HourForm(forms.ModelForm):
                 }
             ),
         }
+
