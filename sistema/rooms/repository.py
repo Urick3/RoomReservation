@@ -1,4 +1,5 @@
 from rooms.models import Room
+from django.db.models import Q
 
 class RoomRepository:
     @staticmethod
@@ -37,3 +38,15 @@ class RoomRepository:
             room.delete()
             return True
         return False
+    
+    @staticmethod
+    def search_rooms(query):
+        """Busca salas por ID, nome."""
+        try:
+            # Tentando buscar por ID
+            return Room.objects.filter(id=query)
+        except ValueError:
+            # Se não for um ID válido, busca por nome 
+            return Room.objects.filter(
+                Q(name__icontains=query)
+            )

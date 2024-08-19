@@ -103,6 +103,57 @@ class ReservationRepository:
         """
         return Reservation.objects.filter(room=room, date=date, status=status)
 
+    @staticmethod
+    def search_reservations(search_query):
+        """
+        Realiza a busca de reservas com base em um critério genérico:
+        - Se o valor é numérico, busca por ID.
+        - Se o valor é uma data, busca por data.
+        - Se o valor é uma string, busca pelo nome da sala.
+
+        :param search_query: Valor inserido pelo usuário no campo de busca.
+        :return: Queryset com as reservas encontradas.
+        """
+        reservations = Reservation.objects.all()
+
+        # Verifica se o valor é numérico e busca por ID
+        if search_query.isdigit():
+            reservations = reservations.filter(id=search_query)
+        
+        # Verifica se o valor é uma data válida e busca por data
+        elif ReservationRepository.is_valid_date(search_query):
+            reservations = reservations.filter(date=search_query)
+        
+        # Caso contrário, considera como nome da sala
+        else:
+            reservations = reservations.filter(room__name__icontains=search_query)
+        
+        return reservations
+
+    @staticmethod
+    def is_valid_date(date_string):
+        """
+        Verifica se uma string é uma data válida no formato YYYY-MM-DD.
+
+        :param date_string: String a ser verificada.
+        :return: Boolean indicando se a string é uma data válida.
+        """
+        from datetime import datetime
+        try:
+            datetime.strptime(date_string, '%Y-%m-%d')
+            return True
+        except ValueError:
+            return False
+        
+    
+    @staticmethod
+    def get_reservations_with_approvals():
+        """
+        Retorna todas as reservas com as informações de aprovação associadas.
+
+        :return: Queryset de reservas com as informações de aprovação.
+        """
+        return Reservation.objects.select_related('room', 'teacher', 'hour').prefetch_related('reservationapproval_set__manager').all()
 
 
 class HourRepository:
