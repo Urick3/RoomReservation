@@ -33,9 +33,20 @@ class UserService:
             return None
 
     @staticmethod
-    def create_new_user(**kwargs):
-        """Cria um novo usuário."""
-        return UserRepository.create_user(**kwargs)
+    def create_new_user(first_name, email, password, user_type):
+        """
+        Cria um novo usuário com `first_name` salvo no campo correto e gera um `username`.
+        """
+        username = first_name.replace(' ', '_').lower()
+        user = UserRepository.create_user(
+            first_name=first_name.capitalize(),
+            username=username,
+            email=email,
+            user_type=user_type
+        )
+        user.set_password(password)
+        user.save()
+        return user
 
     @staticmethod
     def update_existing_user(user_id, **kwargs):

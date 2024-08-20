@@ -206,13 +206,6 @@ class ReservationService:
     
     @staticmethod
     def list_reservations_with_approvals(page=1, per_page=10):
-        """
-        Lista todas as reservas com informações de aprovação, com paginação.
-
-        :param page: Número da página atual.
-        :param per_page: Quantidade de itens por página.
-        :return: Página atual com as reservas e informações de paginação.
-        """
         reservations = ReservationRepository.get_reservations_with_approvals()
         paginator = Paginator(reservations, per_page)
 
@@ -229,22 +222,30 @@ class ReservationService:
             approval_info = reservation.reservationapproval_set.first()
             result.append({
                 'reservation_id': reservation.id,
-                'user_name': reservation.teacher.username,
+                'user_name': reservation.teacher.first_name,
                 'room_name': reservation.room.name,
                 'reservation_date': reservation.date,
                 'reservation_hour': reservation.hour.range_hour,
-                'manager_name': approval_info.manager.username if approval_info else None,
+                'manager_name': approval_info.manager.first_name if approval_info else None,
                 'approval_status': approval_info.status if approval_info else None,
                 'approval_date': approval_info.approved_at if approval_info else None
             })
+
+        # Criar a lista de números de página
+        page_range = range(1, paginator.num_pages + 1)
 
         return {
             'reservations': result,
             'page': page,
             'total_pages': paginator.num_pages,
-            'total_items': paginator.count
+            'total_items': paginator.count,
+            'has_previous': paginated_reservations.has_previous(),
+            'has_next': paginated_reservations.has_next(),
+            'previous_page_number': paginated_reservations.previous_page_number() if paginated_reservations.has_previous() else None,
+            'next_page_number': paginated_reservations.next_page_number() if paginated_reservations.has_next() else None,
+            'page_range': page_range  # Adicionar o intervalo de páginas
         }
-    
+        
     @staticmethod
     def cancel_reservation(reservation_id, manager):
         """

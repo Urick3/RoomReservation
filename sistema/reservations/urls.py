@@ -10,9 +10,9 @@ urlpatterns = [
     path('dashboard/', DashboardRequestPageView.as_view(), name="request_dashboard"),#ok
     path('todas/', ListReservationManager.as_view(), name='total_request'),#ok
     path('cancelar/', ListReservationManager.as_view(), name='request_cancel'),#ok
-    path("listar/horarios/", HourListView.as_view(), name="all_hours"),
-    path("criar/horario/", HourCreateView.as_view(), name="create_hours"),
-    path("editar/horario/<int:hours_id>/", HourUpdateView.as_view(), name="edit_hours"),
-    path("deletar/horario/<int:hours_id>/", HourDeleteView.as_view(), name="delete_hours"),
+    path("listar/horarios/", HourListView.as_view(), name="all_hours"),#ok
+    path("criar/horario/", HourCreateView.as_view(), name="create_hours"),#ok
+    path("editar/horario/<int:hours_id>/", HourUpdateView.as_view(), name="edit_hours"),#ok
+    path("deletar/horario/<int:hours_id>/", HourDeleteView.as_view(), name="delete_hours"),#ok
 
 ]

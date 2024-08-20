@@ -115,9 +115,25 @@ class DashboardTeacherPage(View):
         return render(request, self.template_name)
 
 
+@method_decorator(user_is_manager_or_teacher, name='dispatch')
+class UserProfileView(View):
+    template_name = 'users/profile.html'
 
-def profile(request):
-    return render(request, 'users/profile.html')
+    def get(self, request):
+        form = ProfileForm(instance=request.user)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = ProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil atualizado com sucesso!")
+            return redirect('profile')
+        else:
+            messages.error(request, "Ocorreu um erro ao atualizar o perfil.")
+            return render(request, self.template_name, {'form': form})
+    
+
 
 
 
