@@ -44,8 +44,14 @@ class UserListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        search_query = self.request.GET.get('search', '')
         page = self.request.GET.get('page', 1)
-        users = UserService.list_all_users(page=page, per_page=self.paginate_by)
+        
+        if search_query:
+            users = UserService.search_users(search_query, page=page, per_page=self.paginate_by)
+        else:
+            users = UserService.list_all_users(page=page, per_page=self.paginate_by)
+        
         return users
 
 
