@@ -148,7 +148,7 @@ Os dados são referentes ao arquivo user.json dapasta fixtures
 - Nome: Docente
 - Senha: Senai@1234
 - Tipo: Professor
-- Email: docentesenai4@gmail.com
+- Email: docentesenai@gmail.com
 ---
 - Nome: Gestor
 - Senha: Senai@1234
