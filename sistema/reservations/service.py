@@ -244,6 +244,45 @@ class ReservationService:
             'total_pages': paginator.num_pages,
             'total_items': paginator.count
         }
+    
+    @staticmethod
+    def cancel_reservation(reservation_id, manager):
+        """
+        Cancela uma reserva e atualiza a aprovação com o status 'cancelled'.
+        
+        :param reservation_id: ID da reserva a ser cancelada.
+        :param manager: Instância do usuário gestor que está cancelando a reserva.
+        :return: Reserva cancelada ou mensagem de erro.
+        """
+        try:
+            # Obter a reserva
+            reservation = ReservationRepository.get_reservation_by_id(reservation_id)
+            if not reservation:
+                return {"error": "Reserva não encontrada."}
+
+            # Atualiza o status da reserva para 'cancelled'
+            updated_reservation = ReservationService.update_existing_reservation(
+                reservation_id, status='cancelled'
+            )
+
+            # Atualiza ou cria o registro de aprovação com o status 'cancelled'
+            approval = ReservationApprovalRepository.get_approval_by_reservation(reservation_id)
+            if approval:
+                approval.status = 'cancelled'
+                approval.manager = manager
+                approval.save()
+            else:
+                # Se não houver aprovação existente, cria uma nova
+                ReservationApprovalService.create_new_approval(
+                    reservation=updated_reservation, 
+                    manager=manager, 
+                    status='cancelled'
+                )
+
+            return updated_reservation
+
+        except ValueError as e:
+            return {"error": "Erro ao cancelar a reserva."}
 
 
 class HourService:

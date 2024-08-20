@@ -47,6 +47,8 @@
                             <span class="badge text-bg-success">Aprovado</span> por: {{ reserva.manager_name }} | {{ reserva.approval_date }}</p>
                         {% elif reserva.approval_status == 'rejected' %}
                             <span class="badge text-bg-danger">Rejeitado</span> por: {{ reserva.manager_name }} | {{ reserva.approval_date }}</p>
+                        {% elif reserva.approval_status == 'cancelled' %}
+                            <span class="badge text-bg-danger">Cancelado</span> por: {{ reserva.manager_name }} | {{ reserva.approval_date }}</p>
                         {% else %}
                             <span class="badge text-bg-warning">Pendente</span>
                         {% endif %}
@@ -57,8 +59,13 @@
                         </h5>
                     </div>
                     <div class="text-center">
-                        <!--<a href="#" class="btn btn-primary px-3" style="margin-right: 100px;">Editar</a>-->
-                        <a href="#" class="btn btn-danger px-3">Cancelar</a>
+                        {% if reserva.approval_status != 'cancelled' %}
+                        <form method="POST" action="{% url 'request_cancel' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="reservation_id" value="{{ reserva.reservation_id }}">
+                            <button type="submit" class="btn btn-danger px-3">Cancelar Reserva</button>
+                        </form>
+                        {% endif %}
                     </div>
                 </div>
               </div>
