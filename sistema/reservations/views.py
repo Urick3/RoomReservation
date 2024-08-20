@@ -38,7 +38,7 @@ class CalendarReservation(View):
 
 @method_decorator(user_is_teacher, name='dispatch')
 class ListReservation(View):
-    
+
     def get(self, request, *args, **kwargs):
         search_query = request.GET.get('search', '')
         page = request.GET.get('page', 1)
@@ -51,6 +51,21 @@ class ListReservation(View):
             reservas = ReservationService.get_user_reservations(request.user.id, page=page, per_page=20)
 
         return render(request, 'reservations/request_teacher.html', {'reservas': reservas, 'search_query': search_query})
+
+    def post(self, request, *args, **kwargs):
+        reservation_id = request.POST.get('reservation_id')
+        if reservation_id:
+            # Apenas o usuário logado pode cancelar suas próprias reservas
+            reservation = ReservationService.get_reservation_details(reservation_id)
+            if reservation and reservation.teacher == request.user and reservation.status == 'pending':
+                ReservationService.delete_reservation(reservation_id)
+                messages.success(request, "Reserva cancelada com sucesso!")
+            else:
+                messages.error(request, "Não foi possível cancelar a reserva.")
+        else:
+            messages.error(request, "ID da reserva não encontrado. Por favor, tente novamente.")
+
+        return redirect(request.path_info)
 
 @method_decorator(user_is_manager, name='dispatch')
 class ListReservationPending(View):

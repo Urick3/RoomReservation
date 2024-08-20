@@ -55,6 +55,16 @@
                           {% else %}
                             <span class="badge text-bg-warning">Pendente</span>
                           {% endif %}
+                          {% if reserva.status == "pending" %}
+                          <hr>
+                          <p class="f text-start mb-1" style="font-size: 12px; color: dimgray;">Ação:
+                            <form method="POST" action="{% url 'request_user_cancel' %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="reservation_id" value="{{ reserva.id }}">
+                              <button type="submit" class="btn btn-danger">Cancelar</button>
+                            </form>
+                          </p>
+                          {% endif %}
                         </div>
                       </div>
                   </div>
