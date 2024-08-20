@@ -145,12 +145,12 @@ get_random_secret_key; print(get_random_secret_key())"
 ## Usuários de testes
 Os dados são referentes ao arquivo user.json dapasta fixtures
 
-- Nome: Docente
+- Nome: Usuario Docente
 - Senha: Senai@1234
 - Tipo: Professor
 - Email: docentesenai@gmail.com
 ---
-- Nome: Gestor
+- Nome: Usuario Gestor
 - Senha: Senai@1234
 - Tipo: Gestor
 - Email: gestorsenai@gmail.com
