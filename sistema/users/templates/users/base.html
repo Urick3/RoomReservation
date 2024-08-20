@@ -17,8 +17,9 @@
                 src: url("{% static 'assets/fonts/modestic_sans/ModesticSans-Bold.ttf' %}") format(truetype);
             }
             footer {
-            flex-shrink: 0;
-        }
+                flex-shrink: 0;
+                position: fixed;
+            }
         </style>
     {% endblock %}
     
@@ -42,7 +43,8 @@
         <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
     {% endblock %}
 
-    
+    {% include 'users/partials/_footer.html' %}
+
 </body>
 </html>
 
