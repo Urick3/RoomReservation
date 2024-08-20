@@ -154,3 +154,9 @@ Os dados são referentes ao arquivo user.json dapasta fixtures
 - Senha: Senai@1234
 - Tipo: Gestor
 - Email: gestorsenai@gmail.com
+
+## Realização de testes do sistema
+Exemplo se quiser executar apenas um teste
+```bash
+python .\manage.py test reservations.tests.test_repository
+```
