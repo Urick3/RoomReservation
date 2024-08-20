@@ -17,6 +17,14 @@ class ReservationApprovalRepository:
             return None
 
     @staticmethod
+    def get_approval_by_reservation(reservation_id):
+        """Retorna uma aprovação de reserva pelo ID da reserva."""
+        try:
+            return ReservationApproval.objects.get(reservation_id=reservation_id)
+        except ReservationApproval.DoesNotExist:
+            return None
+
+    @staticmethod
     def create_approval(reservation, manager, status):
         """Cria uma nova aprovação de reserva."""
         return ReservationApproval.objects.create(
